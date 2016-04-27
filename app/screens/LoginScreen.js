@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
 });
 
 
-export default class extends React.Component {
+export default class extends React.Component { 
     render(){
         return (
             <View style={[styles.container, this.props.style]}>
-                <Text>Login page: {this.props.data}</Text>
+                <Text>Login page wa wa dasd : {this.props.data}</Text>
                 <Button onPress={Actions.loginModal2}>Login 2</Button>
                 <Button onPress={() => Actions.refresh({title:"Changed title"})}>Change title</Button>
                 <Button onPress={Actions.pop}>Back</Button>
