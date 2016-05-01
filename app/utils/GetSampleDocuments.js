@@ -2,13 +2,13 @@
 
  var SampleDocuments = {
         total: 10,
-        documents: {
+        documents: [
             {
                  Title: "bla bla document", 
                  FileName: "zaba.jpg", 
                  Description: "this is some document", 
                  Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
@@ -18,7 +18,7 @@
                  FileName: "lala.jpg", 
                  Description: "this is some document", 
                  Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
@@ -28,7 +28,7 @@
                  FileName: "zaba.jpg", 
                  Description: "this is some document", 
                  Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
@@ -38,7 +38,7 @@
                  FileName: "zaba.jpg", 
                  Description: "this is some document", 
                  Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
@@ -48,7 +48,7 @@
                  FileName: "zaba.jpg", 
                  Description: "this is some document", 
                  Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
@@ -58,7 +58,7 @@
                  FileName: "zaba.jpg", 
                  Description: "this is some document", 
                  Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
@@ -68,7 +68,7 @@
                  FileName: "zaba.jpg", 
                  Description: "this is some document", 
                  Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
@@ -78,7 +78,7 @@
                  FileName: "zaba.jpg", 
                  Description: "this is some document", 
                  Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
@@ -88,7 +88,7 @@
                  FileName: "zaba.jpg", 
                  Description: "this is something something", 
                  Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
@@ -97,14 +97,14 @@
                  Title: "bla bla document", 
                  FileName: "zaba.jpg", 
                  Description: "this is some document", 
-                 Owner: "Dudu Mizrahi", 
-                 CreatedOn: "23/04/2015"
+                 Owner: "Dudu Mizrahi",     
+                 CreatedOn: "23/04/2015",
                  HasThumbnail: true, 
                  ThumbnailUrl: "", 
                  ViewerUrl: ""
             }, 
-        }
-    };
+        ]
+ };
 
 
 module.exports = SampleDocuments;

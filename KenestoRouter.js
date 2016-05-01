@@ -54,18 +54,34 @@ const reducerCreate = params=>{
 };
 
 export default class KenestoRouter extends React.Component {
+    
+    // getInitialState(){
+    //     return{
+    //         isLoggedIn : false, 
+    //         sessionToken: ""
+    //     }
+    // },
+    
+    constructor(){
+        super();
+        this.state = { isLoggedIn : false, sessionToken : ""};
+    }
+
+   
     render() {
+        
+
         return <Router createReducer={reducerCreate}>
             <Scene key="modal" component={Modal} >
                 <Scene key="root" hideNavBar={true}>
-                <Scene key="launch" component={KenestoLauncher} title="Launch" initial={true} />
+                <Scene key="launch" component={KenestoLauncher} title="Launch" ini />
                 <Scene key="register" component={RegisterScreen} title="Register"/>
                 <Scene key="login" component={LoginScreen} title="Login"/>
                 <Scene key="loginSplit" direction="vertical" >
                     <Scene key="loginModal" component={LoginScreen} title="Login"/>
                     <Scene key="loginModal2" hideNavBar={true} component={LoginScreen} title="Login2" panHandlers={null} duration={1}/>
                 </Scene>
-                <Scene key="tabbar" component={NavigationDrawer}>
+                <Scene key="tabbar" component={NavigationDrawer} >
                   <Scene key="main" tabs={true} >   
                         <Scene key="documents" component={DocumentsScreen} title="Documents tab" hideTabBar={false} icon={TabIcon}/>
                         <Scene key="data" component={DataScreen} title="data tab" hideTabBar={false} icon={TabIcon}/>

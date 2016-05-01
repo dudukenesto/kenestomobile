@@ -16,7 +16,7 @@
 'use strict';
 
 function getImageSource(document: Object, kind: ?string): {uri: ?string} {
-  var uri = document && document.HasThumbnail ? movie.Thumbnail : null;
+  var uri = document && document.HasThumbnail ? document.Thumbnail : null;
   // if (uri && kind) {
   //   uri = uri.replace('tmb', kind);
   // }

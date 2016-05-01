@@ -13,11 +13,12 @@ const styles = StyleSheet.create({
 
 class Launch extends React.Component {
     render(){
+       
         return (
             <View {...this.props}  style={styles.container}>
                 <Text>Launch page</Text>
                 <Button onPress={Actions.movies}>Go to movies</Button>
-                <Button onPress={()=>Actions.login({data:"Custom data", title:"Custom title" })}>Go to Login page</Button>
+                <Button onPress={()=>Actions.login({isLoggnedIn: this.props.isLoggnedIn, sessionToken: this.props.sessionToken })}>Go to Login page</Button>
                 <Button onPress={Actions.register}>Go to Register page</Button>
                 <Button onPress={Actions.register2}>Go to Register page without animation</Button>
                 <Button onPress={()=>Actions.error("Error message")}>Popup error</Button>

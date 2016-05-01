@@ -32,7 +32,7 @@ var invariant = require('fbjs/lib/invariant');
 var dismissKeyboard = require('dismissKeyboard');
 
 
-var DocumentCell = require('./DocumentCell'); 
+var DocumentCell = require('../components/documentCell'); 
 
 import SampleDocuments from '../utils/GetSampleDocuments';
 
