@@ -68,6 +68,7 @@ var DocumentsScreen = React.createClass({
   timeoutID: (null: any),
 
   getInitialState: function() {
+ 
     return {
       isLoading: false,
       isLoadingTail: false,
@@ -80,6 +81,8 @@ var DocumentsScreen = React.createClass({
   },
 
   componentDidMount: function() {
+    
+       alert(this.props.sessionToken);
     this.searchDocuments('');
   },
 
@@ -142,34 +145,7 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
        isLoading: false,
        dataSource: this.getDataSource(responseData.documents) 
     });
-    // fetch(this._urlForQueryAndPage(query, 1))
-    //   .then((response) => response.json())
-    //   .catch((error) => {
-    //     LOADING[query] = false;
-    //     resultsCache.dataForQuery[query] = undefined;
 
-    //     this.setState({
-    //       dataSource: this.getDataSource([]),
-    //       isLoading: false,
-    //     });
-    //   })
-    //   .then((responseData) => {
-    //     LOADING[query] = false;
-    //     resultsCache.totalForQuery[query] = responseData.total;
-    //     resultsCache.dataForQuery[query] = responseData.documents;
-    //     resultsCache.nextPageNumberForQuery[query] = 2;
-
-    //     if (this.state.filter !== query) {
-    //       // do not update state if the query is stale
-    //       return;
-    //     }
-
-    //     this.setState({
-    //       isLoading: false,
-    //       dataSource: this.getDataSource(responseData.documents),
-    //     });
-    //   })
-    //   .done();
   },
 
   hasMore: function(): boolean {

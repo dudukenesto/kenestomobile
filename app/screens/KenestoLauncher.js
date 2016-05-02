@@ -15,29 +15,36 @@ class KenestoLauncher extends React.Component {
     
       constructor(props){
         super(props);
-        this.state = { isLoggedIn : false, sessionToken : ""};
+       // var isloggedIn = props != null && props.isLoggedIn != null? props.isLoggedIn : false;
+     //   var sessionToken = props != null && props.sessionToken != null? props.sessionToken : "";
+     //   this.state = { isLoggedIn : isloggedIn, sessionToken : sessionToken};
+     
+     
+      this.state = { isLoggedIn : false, sessionToken : ""};
       
     }
 
-    updateLoginInfo(isLoggedIn : boolean, sessionToken: string ){
-        debugger
+    updateLoginInfo(isLoggedIn: boolean, sessionToken: string ){
       this.setState({ isLoggedIn: isLoggedIn, sessionToken: sessionToken});
     }
     
-    componentdidmount(){
-        if (this.state.isLoggedIn)
-        Actions.tabbar();
-    }
-    
+   componentWillMount(){
+       if (this.state.isLoggedIn)
+            Actions.tabbar();
+   }
    
+  
+   
+
+    
    
     render(){
                
             return (
                 <View {...this.props}  style={styles.container}>
                     <Text>Welcome to Kenesto</Text>
-                    <Button onPress={()=>Actions.login({isLoggnedIn: this.state.isLoggedIn, sessionToken: this.state.sessionToken, updateLoginInfo: this.updateLoginInfo.bind(this) })}>Go to Login page</Button>
-                
+                    <Button onPress={()=>Actions.login({isLoggnedIn: this.state.isLoggedIn, sessionToken: this.state.sessionToken, updateLoginInfo: this.updateLoginInfo.bind(this) })}>Go to login</Button>
+                 <Button onPress={this.testState}>text state</Button>
                 </View>
             );
    

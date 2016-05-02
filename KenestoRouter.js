@@ -12,7 +12,7 @@ import TabView from './app/components/TabView'
 // import Login from './components/Login'
 // import Login2 from './components/Login2'
 
-// import Error from './components/Error'
+ import Error from './app/components/Error'
 // import Home from './components/Home'
 // import TabView from './components/TabView'
 // import EchoView from './components/EchoView'
@@ -62,10 +62,10 @@ export default class KenestoRouter extends React.Component {
     //     }
     // },
     
-    constructor(){
-        super();
-        this.state = { isLoggedIn : false, sessionToken : ""};
-    }
+    // constructor(){
+    //     super();
+    //     this.state = { isLoggedIn : false, sessionToken : ""};
+    // }
 
    
     render() {
@@ -74,9 +74,9 @@ export default class KenestoRouter extends React.Component {
         return <Router createReducer={reducerCreate}>
             <Scene key="modal" component={Modal} >
                 <Scene key="root" hideNavBar={true}>
-                <Scene key="launch" component={KenestoLauncher} title="Launch" ini />
+                <Scene key="launch" component={KenestoLauncher} title="Launch" initial={true}  />
                 <Scene key="register" component={RegisterScreen} title="Register"/>
-                <Scene key="login" component={LoginScreen} title="Login"/>
+                <Scene key="login" component={LoginScreen} title="Login" />
                 <Scene key="loginSplit" direction="vertical" >
                     <Scene key="loginModal" component={LoginScreen} title="Login"/>
                     <Scene key="loginModal2" hideNavBar={true} component={LoginScreen} title="Login2" panHandlers={null} duration={1}/>
