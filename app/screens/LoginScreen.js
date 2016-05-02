@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
             super(props)
 
             this.state = {
-            username: "aas",
-            password: "baba",
+            username: "afsdfsdfas",
+            password: "babfsdfsda",
          }
       }
    
