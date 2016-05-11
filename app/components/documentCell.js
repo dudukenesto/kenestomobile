@@ -50,7 +50,7 @@ var DocumentCell = React.createClass({
             />
             <View style={styles.textContainer}>
               <Text style={styles.documentTitle} numberOfLines={2}>
-                {this.props.document.Title}
+                {this.props.document.Name}
               </Text>
               <Text style={styles.documentYear} numberOfLines={1}>
                 Somthing about the year of the document
@@ -90,7 +90,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#dddddd',
     height: 93,
     marginRight: 10,
-    width: 60,
+    width: 90,
   },
   cellBorder: {
     backgroundColor: 'rgba(0, 0, 0, 0.1)',

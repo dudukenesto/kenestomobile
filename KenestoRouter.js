@@ -9,6 +9,8 @@ import TasksScreen from './app/screens/TasksScreen'
 import DataScreen from './app/screens/DataScreen'
 import NavigationDrawer from './app/components/NavigationDrawer'
 import TabView from './app/components/TabView'
+import DocumentView from './app/screens/DocumentView'
+//import DocumentView from './app/screens/WebViewExamples'
 // import Login from './components/Login'
 // import Login2 from './components/Login2'
 
@@ -74,7 +76,8 @@ export default class KenestoRouter extends React.Component {
         return <Router createReducer={reducerCreate}>
             <Scene key="modal" component={Modal} >
                 <Scene key="root" hideNavBar={true}>
-                <Scene key="launch" component={KenestoLauncher} title="Launch" initial={true}  />
+                <Scene key="launch" component={KenestoLauncher} title="Launch"  initial={true}/>
+                <Scene key="documentViewFirst" component={DocumentView}  hideTabBar={true} icon={TabIcon}  />
                 <Scene key="register" component={RegisterScreen} title="Register"/>
                 <Scene key="login" component={LoginScreen} title="Login" />
                 <Scene key="loginSplit" direction="vertical" >
@@ -83,7 +86,11 @@ export default class KenestoRouter extends React.Component {
                 </Scene>
                 <Scene key="tabbar" component={NavigationDrawer} >
                   <Scene key="main" tabs={true} >   
-                        <Scene key="documents" component={DocumentsScreen} title="Documents tab" hideTabBar={false} icon={TabIcon}/>
+                   <Scene key="loginSplit" direction="vertical" title="Documents tab"  icon={TabIcon}>
+                    <Scene key="documents" component={DocumentsScreen} title="Documents tab" hideTabBar={false} icon={TabIcon}/>
+                        <Scene key="documentView" component={DocumentView}  hideTabBar={true} icon={TabIcon}/>
+                    </Scene>
+                       
                         <Scene key="data" component={DataScreen} title="data tab" hideTabBar={false} icon={TabIcon}/>
                          <Scene key="tasks" component={TasksScreen} title="tasks tab" hideTabBar={false} icon={TabIcon}/>
                     </Scene>

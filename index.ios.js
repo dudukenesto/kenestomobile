@@ -14,7 +14,8 @@ import React, {
 class KenestoMobile extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <cd..
+      View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>

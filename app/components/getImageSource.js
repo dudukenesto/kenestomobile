@@ -17,6 +17,7 @@
 
 function getImageSource(document: Object, kind: ?string): {uri: ?string} {
   var uri = document && document.HasThumbnail ? document.Thumbnail : null;
+ uri = 'http://10.0.0.117/Kenesto.Images/Images.svc/4_df733dd2-1e6e-4702-8ed5-9e58af166133.jpg';
   // if (uri && kind) {
   //   uri = uri.replace('tmb', kind);
   // }

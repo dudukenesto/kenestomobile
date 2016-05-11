@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
 
 export default class TabView extends React.Component {
     render(){
-        debugger;
         var {View, Text} = React;
         var Button = require("react-native-button");
         var Actions = require("react-native-router-flux").Actions;

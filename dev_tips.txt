@@ -1,0 +1,8 @@
+**** debug on device **** 
+
+> adb devices  // list of devices 
+> adb -s [device name] reverse tcp:8081 tcp:8081  // in order to debug on a connected device
+> adb -s []device name emu kill // kill an emulator device
+
+*** web view *** 
+https://facebook.github.io/react-native/docs/webview.html

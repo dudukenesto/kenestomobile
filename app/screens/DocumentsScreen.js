@@ -82,7 +82,7 @@ var DocumentsScreen = React.createClass({
 
   componentDidMount: function() {
     
-       alert(this.props.sessionToken);
+      // alert(this.props.sessionToken);
     this.searchDocuments('');
   },
 
@@ -132,20 +132,38 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
       isLoadingTail: false,
     });
 
-    var responseData = SampleDocuments; 
-    LOADING[query] = false;
-    resultsCache.totalForQuery[query] = responseData.total;
-    resultsCache.dataForQuery[query] = responseData.documents;
-    resultsCache.nextPageNumberForQuery[query] = 2;
-    if (this.state.filter !== query) {
-        return;
-    }
+    //var responseData = SampleDocuments; 
     
-    this.setState({
-       isLoading: false,
-       dataSource: this.getDataSource(responseData.documents) 
-    });
-
+    const sessionToken  = encodeURIComponent(this.props.sessionToken)
+    
+    var docsUrl = `http://10.0.0.104/Kenesto.Web.API/KDocuments.svc/RetrieveDocuments?t=${sessionToken}&fid=00000000-0000-0000-0000-000000000000`;
+  
+    
+     var responseData =  fetch(docsUrl).then((response) => response.json())
+                    .catch((error) => {
+                        //Actions.error({data: 'get documents faliled failed'})
+                        alert('failed to get docs')
+                    })
+                    .then( (responseData) => {
+                      debugger;
+                       if (responseData.ResoponseStatus == 'FAILED')
+                       {
+                         alert('failed');
+                       }
+     
+                          LOADING[query] = false;
+                          resultsCache.totalForQuery[query] = typeof responseData.ResponseData.DocumentsList == 'undefined'? 0 :  responseData.ResponseData.DocumentsList.length;
+                          resultsCache.dataForQuery[query] = responseData.ResponseData.DocumentsList;
+                          resultsCache.nextPageNumberForQuery[query] = 2;
+                          if (this.state.filter !== query) {
+                              return;
+                          }
+                          
+                          this.setState({
+                            isLoading: false,
+                            dataSource: this.getDataSource(responseData.ResponseData.DocumentsList) 
+                          });
+                    }).done();
   },
 
   hasMore: function(): boolean {
@@ -220,20 +238,23 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
   },
 
   selectDocument: function(document: Object) {
-    if (Platform.OS === 'ios') {
-      this.props.navigator.push({
-        title: document.Title,
-        component: DocumentScreen,
-        passProps: {document},
-      });
-    } else {
-      dismissKeyboard();
-      this.props.navigator.push({
-        title: document.Title,
-        name: 'document',
-        document: document,
-      });
-    }
+    
+    
+    Actions.documentView({sessionToken: this.props.sessionToken, viewerUrl: document.ViewerUrl});
+    // if (Platform.OS === 'ios') {
+    //   this.props.navigator.push({
+    //     title: document.Title,
+    //     component: DocumentScreen,
+    //     passProps: {document},
+    //   });
+    // } else {
+    //   dismissKeyboard();
+    //   this.props.navigator.push({
+    //     title: document.Title,
+    //     name: 'document',
+    //     document: document,
+    //   });
+    // }
   },
 
   onSearchChange: function(event: Object) {
