@@ -3,7 +3,7 @@
 
 
 export function get(url) {
-    alert('dsds')
+
   //  return fetch(url)
     //.then((response) => response.json());
 }
@@ -20,7 +20,7 @@ export function get(url) {
     
 //     Login(username: string, password: string){
         
-        alerty('bamba');
+    
         var {AuthUrlTemplate, LoginUrlTemplate} = config;
         var authUrl = AuthUrlTemplate.replace('{0}', username).replace('{1}', password); 
         fetch(authUrl)

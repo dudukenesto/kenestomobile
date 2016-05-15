@@ -37,6 +37,10 @@ var DocumentCell = React.createClass({
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
     }
+    
+    var imageSource = require('../assets/images/thumbnail_img.png'); 
+    //if (this.props.docuemet.HasThumbnail)
+    //  imageSource = getImageSource(this.props.document, 'det');
     return (
       <View>
         <TouchableElement
@@ -45,7 +49,8 @@ var DocumentCell = React.createClass({
           onHideUnderlay={this.props.onUnhighlight}>
           <View style={styles.row}>
             <Image
-              source={getImageSource(this.props.document, 'det')}
+              source={{uri: 'thumbnail_img'}}
+            // source = {require('../assets/images/thumbnail_img.png')}
               style={styles.cellImage}
             />
             <View style={styles.textContainer}>

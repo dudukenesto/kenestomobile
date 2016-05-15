@@ -21,6 +21,7 @@ function getImageSource(document: Object, kind: ?string): {uri: ?string} {
   // if (uri && kind) {
   //   uri = uri.replace('tmb', kind);
   // }
+  
   return { uri };
 }
 
