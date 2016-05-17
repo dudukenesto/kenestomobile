@@ -5,4 +5,5 @@
 > adb -s []device name emu kill // kill an emulator device
 
 *** web view *** 
+some changes 
 https://facebook.github.io/react-native/docs/webview.html
