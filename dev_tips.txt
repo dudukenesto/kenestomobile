@@ -5,5 +5,12 @@
 > adb -s []device name emu kill // kill an emulator device
 
 *** web view *** 
-some changes 
+
+
 https://facebook.github.io/react-native/docs/webview.html
+
+change from KOSTA
+
+some changes b dfgdfgdfgdf
+https://facebook.github.io/react-native/docs/webview.html
+
