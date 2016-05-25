@@ -44,9 +44,17 @@ export default class extends React.Component {
 
     render(){
         return (
-           <View>
-            
-           </View>
+            <Animated.View style={[styles.container, {backgroundColor:"rgba(52,52,52,0.5)"},
+                                  {transform: [{translateY: this.state.offset}]}]}>
+                <View style={{  width:250,
+                                height:250,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                backgroundColor:"white" }}>
+                    <Text>{this.props.data}</Text>
+                    <Button onPress={this.closeModal.bind(this)}>Close</Button>
+                </View>
+            </Animated.View>
         );
     }
 }

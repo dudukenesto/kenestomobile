@@ -2,6 +2,7 @@
 
 > adb devices  // list of devices 
 > adb -s [device name] reverse tcp:8081 tcp:8081  // in order to debug on a connected device
+> adb reverse tcp:8081 tcp:8081 
 > adb -s []device name emu kill // kill an emulator device
 
 *** web view *** 
