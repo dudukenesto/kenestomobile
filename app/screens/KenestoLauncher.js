@@ -44,7 +44,7 @@ class KenestoLauncher extends React.Component {
                 <View {...this.props}  style={styles.container}>
                     <Text>Welcome to Kenesto</Text>
                     <Button onPress={()=>Actions.login({isLoggnedIn: this.state.isLoggedIn, sessionToken: this.state.sessionToken, updateLoginInfo: this.updateLoginInfo.bind(this) })}>Go to login</Button>
-                 <Button onPress={this.testState}>text state</Button>
+                 <Button onPress={Actions.WebViewExample}> view</Button>
                 </View>
             );
    

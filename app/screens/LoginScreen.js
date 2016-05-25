@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
      
 
       constructor(props) {
+         
             super(props)
 
             this.state = {

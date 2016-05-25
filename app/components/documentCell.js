@@ -39,6 +39,12 @@ var DocumentCell = React.createClass({
     }
     
     var imageSource = require('../assets/images/thumbnail_img.png'); 
+    if (this.props.document.FamilyCode == 'FOLDER')
+      imageSource = require('../assets/images/thumbnail_zip.png'); 
+      
+     
+        
+        
     //if (this.props.docuemet.HasThumbnail)
     //  imageSource = getImageSource(this.props.document, 'det');
     return (
@@ -49,8 +55,8 @@ var DocumentCell = React.createClass({
           onHideUnderlay={this.props.onUnhighlight}>
           <View style={styles.row}>
             <Image
-              source={{uri: 'thumbnail_img'}}
-            // source = {require('../assets/images/thumbnail_img.png')}
+            //  source={{uri: 'thumbnail_img'}}
+             source = {imageSource}
               style={styles.cellImage}
             />
             <View style={styles.textContainer}>

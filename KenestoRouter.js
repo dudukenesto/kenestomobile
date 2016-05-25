@@ -10,9 +10,9 @@ import DataScreen from './app/screens/DataScreen'
 import NavigationDrawer from './app/components/NavigationDrawer'
 import TabView from './app/components/TabView'
 import DocumentView from './app/screens/DocumentView'
-//import DocumentView from './app/screens/WebViewExamples'
+import WebViewExample from './app/screens/WebViewExample'
 // import Login from './components/Login'
-// import Login2 from './components/Login2'
+ import Login2 from'./app/screens/login2'
 
  import Error from './app/components/Error'
 // import Home from './components/Home'
@@ -77,24 +77,35 @@ export default class KenestoRouter extends React.Component {
             <Scene key="modal" component={Modal} >
                 <Scene key="root" hideNavBar={true}>
                 <Scene key="launch" component={KenestoLauncher} title="Launch"  initial={true}/>
-                <Scene key="documentViewFirst" component={DocumentView}  hideTabBar={true} icon={TabIcon}  />
+                <Scene key="WebViewExample" component={WebViewExample}  hideTabBar={true} icon={TabIcon}  />
                 <Scene key="register" component={RegisterScreen} title="Register"/>
                 <Scene key="login" component={LoginScreen} title="Login" />
+                <Scene key="loginbaba" component={Login2} title="Loginbaba" />
                 <Scene key="loginSplit" direction="vertical" >
                     <Scene key="loginModal" component={LoginScreen} title="Login"/>
                     <Scene key="loginModal2" hideNavBar={true} component={LoginScreen} title="Login2" panHandlers={null} duration={1}/>
                 </Scene>
                 <Scene key="tabbar" component={NavigationDrawer} >
                   <Scene key="main" tabs={true} >   
-                   <Scene key="loginSplit" direction="vertical" title="Documents tab"  icon={TabIcon}>
-                    <Scene key="documents" component={DocumentsScreen} title="Documents tab" hideTabBar={false} icon={TabIcon}/>
+                  
+                  
+                  
+                  <Scene key="documents" direction="vertical" >
+                        <Scene key="documentsList" component={DocumentsScreen} title="Documents tab" hideTabBar={false} icon={TabIcon}/>
+                         <Scene key="login2" component={Login2} title="Login2"/>
                         <Scene key="documentView" component={DocumentView}  hideTabBar={true} icon={TabIcon}/>
+                  </Scene>
+                
+                    
+                        
+               
+               
                     </Scene>
                        
                         <Scene key="data" component={DataScreen} title="data tab" hideTabBar={false} icon={TabIcon}/>
                          <Scene key="tasks" component={TasksScreen} title="tasks tab" hideTabBar={false} icon={TabIcon}/>
                     </Scene>
-                </Scene>
+               
                    
                 </Scene>
                 <Scene key="error" component={Error}/>

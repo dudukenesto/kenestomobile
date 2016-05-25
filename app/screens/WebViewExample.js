@@ -1,6 +1,7 @@
 'use strict';
 
-var React = require('react-native');
+var React = require('react');
+var ReactNative = require('react-native');
 var {
   StyleSheet,
   Text,
@@ -9,7 +10,7 @@ var {
   TouchableOpacity,
   View,
   WebView
-} = React;
+} = ReactNative;
 
 var HEADER = '#3b5998';
 var BGWASH = 'rgba(255,255,255,0.8)';
@@ -17,11 +18,9 @@ var DISABLED_WASH = 'rgba(255,255,255,0.25)';
 
 var TEXT_INPUT_REF = 'urlInput';
 var WEBVIEW_REF = 'webview';
-//var DEFAULT_URL = 'http://cloud-demo.techsoft3d.com/?instance=WREN%20MW54%20TURBO%20JET';
-//var DEFAULT_URL = 'http://10.0.0.105/static/hoops_web_viewer/client_side_renderer/hoops_web_viewer.html?/static/tempcache/session-c65d27a622b2ece9a35d30cbc264e74a2a3c38dd/124f7a3a-c274-43f6-bfbd-5cc9fc0837ba.hsf';
-var DEFAULT_URL = 'https://viewer3d.kenesto.com/static/hoops_web_viewer/client_side_renderer/hoops_web_viewer.html?/static/tempcache/session-c204ad286f10be5107de0cf8a541e38090b9e7cf/4fbd5f17-a35e-4d1e-8233-c92f76b47e6c.hsf';
+var DEFAULT_URL = 'https://m.facebook.com';
 
-var DocumentView = React.createClass({
+var WebViewExample = React.createClass({
 
   getInitialState: function() {
     return {
@@ -30,7 +29,7 @@ var DocumentView = React.createClass({
       backButtonEnabled: false,
       forwardButtonEnabled: false,
       loading: true,
-      scalesPageToFit: false,
+      scalesPageToFit: true,
     };
   },
 
@@ -45,9 +44,8 @@ var DocumentView = React.createClass({
   },
 
   render: function() {
-    
- 
     this.inputText = this.state.url;
+
     return (
       <View style={[styles.container]}>
         <View style={[styles.addressBarRow]}>
@@ -77,7 +75,7 @@ var DocumentView = React.createClass({
           <TouchableOpacity onPress={this.pressGoButton}>
             <View style={styles.goButton}>
               <Text>
-                 Gaa!
+                 Go!
               </Text>
             </View>
           </TouchableOpacity>
@@ -93,7 +91,7 @@ var DocumentView = React.createClass({
           onNavigationStateChange={this.onNavigationStateChange}
           onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest}
           startInLoadingState={true}
-          scalesPageToFit={false}
+          scalesPageToFit={this.state.scalesPageToFit}
         />
         <View style={styles.statusBar}>
           <Text style={styles.statusBarText}>{this.state.status}</Text>
@@ -323,7 +321,7 @@ exports.description = 'Base component to display web content';
 exports.examples = [
   {
     title: 'Simple Browser',
-    render(): ReactElement { return <DocumentView />; }
+    render(): ReactElement { return <WebViewExample />; }
   },
   {
     title: 'Scale Page to Fit',
@@ -363,7 +361,7 @@ exports.examples = [
     title: 'POST Test',
     render(): ReactElement {
       return (
-        <WebView
+        <WebViewAndroid
           style={{
             backgroundColor: BGWASH,
             height: 100,
@@ -379,5 +377,3 @@ exports.examples = [
     }
   }
 ];
-
-module.exports = DocumentView;

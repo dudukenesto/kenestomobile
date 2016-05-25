@@ -17,7 +17,7 @@ var DISABLED_WASH = 'rgba(255,255,255,0.25)';
 
 var TEXT_INPUT_REF = 'urlInput';
 var WEBVIEW_REF = 'webview';
-var DEFAULT_URL = 'http://www.one.co.il/';
+var DEFAULT_URL = 'www.one.co.il';
 
 class DocumentView extends React.Component{
   constructor(props){
@@ -36,16 +36,18 @@ class DocumentView extends React.Component{
   
   render(){
     var sessionToken = this.state.sessionToken;
-   debugger
     return(
           <View style={{ flex: 1}}>
         <WebView
           style={{ backgroundColor: BGWASH, position: 'absolute',top: 0, bottom: 0, left: 0, right: 0}}
-       //   source={{uri: 'http://10.0.0.105/static/hoops_web_viewer/client_side_renderer/hoops_web_viewer.html?/static/tempcache/session-c65d27a622b2ece9a35d30cbc264e74a2a3c38dd/124f7a3a-c274-43f6-bfbd-5cc9fc0837ba.hsf'}}
-          source={{uri: this.state.viewerUrl}}
+      //    style = {{height: 700}}
+         source={{uri: this.state.viewerUrl}}
+        //  source={{uri: 'http://10.0.0.105/static/hoops_web_viewer/client_side_renderer/hoops_web_viewer_mobile.html?/static/tempcache/session-c65d27a622b2ece9a35d30cbc264e74a2a3c38dd/124f7a3a-c274-43f6-bfbd-5cc9fc0837ba.hsf'}}
           
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
          
-          scalesPageToFit={false}
+          scalesPageToFit={true}
         />
        
       </View>

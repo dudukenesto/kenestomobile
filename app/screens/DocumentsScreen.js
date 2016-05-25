@@ -33,12 +33,13 @@ var dismissKeyboard = require('dismissKeyboard');
 
 
 var DocumentCell = require('../components/documentCell'); 
-
+import BreadCrumbs from '../components/BreadCrumbs';
 import SampleDocuments from '../utils/GetSampleDocuments';
-
+import config from '../utils/app.config';
 var SearchBar = require('SearchBar');
 import {Actions} from "react-native-router-flux";
 import Button from "react-native-button";
+import Folder from '../models/Folder';
 /**
  * This is for demo purposes only, and rate limited.
  * In case you want to use the Rotten Tomatoes' API on a real app you should
@@ -72,6 +73,10 @@ var DocumentsScreen = React.createClass({
     return {
       isLoading: false,
       isLoadingTail: false,
+      folderId: null,
+      folderName: "",
+      foldersTrail : [],
+      parentFolderId : null,
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
@@ -80,9 +85,11 @@ var DocumentsScreen = React.createClass({
     };
   },
 
-  componentDidMount: function() {
+  componentWillMount: function() {
+   
     
-      // alert(this.props.sessionToken);
+  //  this.setState({folderId: this.props.folderId, parentFolderId: this.props.parentFolderId, parentFolderName: this.props.parentFolderName });
+    
     this.searchDocuments('');
   },
 
@@ -109,10 +116,20 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
   searchDocuments: function(query: string) {
     this.timeoutID = null;
 
-    this.setState({filter: query});
+//    this.setState({filter: query});
+    
+   
+    
+      // if (back){
+      //   folderId = this.state.foldersTrail.length > 0? this.state.foldersTrail[this.state.foldersTrail.length - 1]: null
+      //  }
+     
+     var fId = this.state.folderId == null? '00000000-0000-0000-0000-000000000000' :this.state.folderId;
 
+ //   alert(fid)
     var cachedResultsForQuery = resultsCache.dataForQuery[query];
-    if (cachedResultsForQuery) {
+    if (cachedResultsForQuery && 1 == 2) {
+     
       if (!LOADING[query]) {
         this.setState({
           dataSource: this.getDataSource(cachedResultsForQuery),
@@ -131,35 +148,36 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
       queryNumber: this.state.queryNumber + 1,
       isLoadingTail: false,
     });
-
-    //var responseData = SampleDocuments; 
-    
     const sessionToken  = encodeURIComponent(this.props.sessionToken)
-    
-    var docsUrl = `http://10.0.0.104/Kenesto.Web.API/KDocuments.svc/RetrieveDocuments?t=${sessionToken}&fid=00000000-0000-0000-0000-000000000000`;
-  
-    
+    const {ApiBaseUrl} = config;
+    var docsUrl = `${ApiBaseUrl}/KDocuments.svc/RetrieveDocuments?t=${sessionToken}&fid=${fId}`;
+    var folderName = '';
+
      var responseData =  fetch(docsUrl).then((response) => response.json())
                     .catch((error) => {
                         //Actions.error({data: 'get documents faliled failed'})
                         alert('failed to get docs')
                     })
                     .then( (responseData) => {
-                      debugger;
+                     
                        if (responseData.ResoponseStatus == 'FAILED')
                        {
                          alert('failed');
                        }
-     
+                       
                           LOADING[query] = false;
                           resultsCache.totalForQuery[query] = typeof responseData.ResponseData.DocumentsList == 'undefined'? 0 :  responseData.ResponseData.DocumentsList.length;
                           resultsCache.dataForQuery[query] = responseData.ResponseData.DocumentsList;
+                          folderName = responseData.ResponseData.FolderName;
                           resultsCache.nextPageNumberForQuery[query] = 2;
                           if (this.state.filter !== query) {
                               return;
                           }
-                          
+                      
+                         
                           this.setState({
+                            folderName: folderName,
+                            filter: query,
                             isLoading: false,
                             dataSource: this.getDataSource(responseData.ResponseData.DocumentsList) 
                           });
@@ -238,9 +256,20 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
   },
 
   selectDocument: function(document: Object) {
+ 
+  if (document.FamilyCode == 'FOLDER')
+  {
+    var folderT = new Object(); 
+    folderT.Id = document.Id;
+    folderT.Name = document.Name;
+   this.state.foldersTrail.push(folderT);
+    this.setState({ folderId : document.Id});
+    this.searchDocuments(this.state.filter);
+  }
     
-    
+  else
     Actions.documentView({sessionToken: this.props.sessionToken, viewerUrl: document.ViewerUrl});
+   // Actions.documentView();
     // if (Platform.OS === 'ios') {
     //   this.props.navigator.push({
     //     title: document.Title,
@@ -309,8 +338,15 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
       />
     );
   },
+  GoBack: function(){
+     this.state.foldersTrail.pop();  
+     var fid = this.state.foldersTrail.length > 0 ? this.state.foldersTrail[this.state.foldersTrail.length-1].Id: null;
+     this.setState({folderId: fid });
+     this.searchDocuments('')
+  },
 
   render: function() {
+    var   backButton = this.state.folderId != null ?   <Button onPress={ (()=> this.GoBack())}>back</Button> : null;
     var content = this.state.dataSource.getRowCount() === 0 ?
       <NoDocuments
         filter={this.state.filter}
@@ -331,13 +367,15 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
 
     return (
       <View style={styles.container}>
-       <Button onPress={Actions.pop}>Back</Button>
-        <SearchBar
+     <SearchBar
           onSearchChange={this.onSearchChange}
           isLoading={this.state.isLoading}
           onFocus={() =>
             this.refs.listview && this.refs.listview.getScrollResponder().scrollTo({ x: 0, y: 0 })}
         />
+        <Text>{this.state.folderName}</Text>
+        {backButton}
+        
         <View style={styles.separator} />
         {content}
       </View>
@@ -368,6 +406,7 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    marginTop: 40
   },
   centerText: {
     alignItems: 'center',
