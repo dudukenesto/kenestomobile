@@ -36,13 +36,16 @@ class DocumentView extends React.Component{
   
   render(){
     var sessionToken = this.state.sessionToken;
+     debugger;
     return(
+     
+ 
           <View style={{ flex: 1}}>
         <WebView
           style={{ backgroundColor: BGWASH, position: 'absolute',top: 0, bottom: 0, left: 0, right: 0}}
       //    style = {{height: 700}}
          source={{uri: this.state.viewerUrl}}
-        //  source={{uri: 'http://10.0.0.105/static/hoops_web_viewer/client_side_renderer/hoops_web_viewer_mobile.html?/static/tempcache/session-c65d27a622b2ece9a35d30cbc264e74a2a3c38dd/124f7a3a-c274-43f6-bfbd-5cc9fc0837ba.hsf'}}
+        //  source={{uri: 'http://localhost/PLMPlus.UI.Client/UserExternal/GetViewerUrl?isExternal=True&token=MDEwL1NvYXZhSzNqUVpWajlkSmE5alFkbTNhMXREaXB5NC9sVXEraUNFcUFPN2RFZjd1UVlxNnhicmF2OVQxdDYxK2hWVEkxWlRsQ1BGNlh6SE16cVQ0Rk9MSlR5YjZBclVmdFdRKzBaTUZMUEc2WU1Ca1FqbncwS3BkdXg2K2ZhdE1yeDl0NjNvY1ZCYUlpVnEvL3o0UVN6YW9ENTNLWTd5RElJSWJVWWlZPQ2&assetId=8cd8b1bb-5528-40e2-99c8-779bf951d100&AssetFamilyCode=GENERAL&useInternalToken=False&useItemVersion=True&isSessionToken=True&mobile=True'}}
           
             javaScriptEnabled={true}
             domStorageEnabled={true}

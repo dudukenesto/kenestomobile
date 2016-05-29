@@ -149,7 +149,10 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
       isLoadingTail: false,
     });
     const sessionToken  = encodeURIComponent(this.props.sessionToken)
-    const {ApiBaseUrl} = config;
+    const {curEnv} = config.env;
+
+    const {ApiBaseUrl} = curEnv == 'dev' ?  config.dev : config.qa;
+    
     var docsUrl = `${ApiBaseUrl}/KDocuments.svc/RetrieveDocuments?t=${sessionToken}&fid=${fId}`;
     var folderName = '';
 
@@ -328,6 +331,8 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
     rowID: number | string,
     highlightRowFunc: (sectionID: ?number | string, rowID: ?number | string) => void,
   ) {
+    
+
     return (
       <DocumentCell
         key={document.Id}

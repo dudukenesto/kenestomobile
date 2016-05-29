@@ -39,14 +39,16 @@ var DocumentCell = React.createClass({
     }
     
     var imageSource = require('../assets/images/thumbnail_img.png'); 
+           
+    if (this.props.document.HasThumbnail)
+      imageSource ={uri: this.props.document.ThumbnailUrl}
+ 
     if (this.props.document.FamilyCode == 'FOLDER')
       imageSource = require('../assets/images/thumbnail_zip.png'); 
       
      
         
-        
-    //if (this.props.docuemet.HasThumbnail)
-    //  imageSource = getImageSource(this.props.document, 'det');
+
     return (
       <View>
         <TouchableElement

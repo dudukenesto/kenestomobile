@@ -23,7 +23,7 @@ export default class extends React.Component {
             <View style={[styles.container, this.props.sceneStyle]}>
                 <Text style={styles.instructions}>key: {this.props.navigationState.key}</Text>
                 <Text style={styles.instructions}>sceneKey: {this.props.navigationState.sceneKey}</Text>
-                <Button onPress={Actions.echo}>push new scene</Button>
+                <Button onPress={Actions.echo}>push new zaba</Button>
                 <Button onPress={Actions.pop}>pop</Button>
             </View>
         );

@@ -40,14 +40,16 @@ const styles = StyleSheet.create({
     _makeLogin(){
      
        
-        // var { username, password } = this.state; 
+         var { username, password } = this.state; 
          
        
-         username = "scott@kenestodemo.com"; 
-         password = "!QAZ@WSX";
+       //  username = "scott@kenestodemo.com"; 
+       //  password = "!QAZ@WSX";
         
-         
-        var {AuthUrlTemplate, LoginUrlTemplate} = config;
+         const {curEnv} = config.env;
+
+        var {AuthUrlTemplate, LoginUrlTemplate} = curEnv == 'dev' ?  config.dev : config.qa;
+    
         var authUrl = AuthUrlTemplate.replace('{0}', username).replace('{1}', password); 
     
         fetch(authUrl)
@@ -130,16 +132,19 @@ const styles = StyleSheet.create({
        
         />
         
-         <Button onPress={this._makeLogin.bind(this)}>call makeLogina</Button>
+         <Button onPress={this._makeLogin.bind(this)}>Login</Button>
 
-        <TouchableHighlight onPress={this._makeLogin.bind(this)}>
-          <Text>Submit</Text>
-        </TouchableHighlight>
-        
               
             </View>
         );
     }
 }
+
+
+/**
+        <TouchableHighlight onPress={this._makeLogin.bind(this)}>
+          <Text>Submit</Text>
+        </TouchableHighlight>
+ */    
 
 module.exports = Login;
