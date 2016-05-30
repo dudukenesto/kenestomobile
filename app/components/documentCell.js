@@ -42,6 +42,7 @@ var DocumentCell = React.createClass({
            
     if (this.props.document.HasThumbnail)
       imageSource ={uri: this.props.document.ThumbnailUrl}
+     
  
     if (this.props.document.FamilyCode == 'FOLDER')
       imageSource = require('../assets/images/thumbnail_zip.png'); 
