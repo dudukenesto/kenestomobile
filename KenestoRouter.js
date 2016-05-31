@@ -42,8 +42,21 @@ class Right extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {flex:1, backgroundColor:"transparent",justifyContent: "center",
-        alignItems: "center",}
+    container: {
+        flex: 1, 
+        backgroundColor: "transparent",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+   leftButtonIconStyle: {
+       height: 37,
+       width: 37,
+       padding: 0,
+   },
+   leftButtonStyle: {
+       alignItems: "center",
+       flexDirection: "row",
+   }   
 
 });
 
@@ -55,8 +68,13 @@ const reducerCreate = params=>{
     }
 };
 
+const drawerImage = require('./app/assets/images/menu-icon2.png'); // Kenesto side-menu button
+const backButtonImage = require('./app/assets/images/arrow-orange-th.png'); // Kenesto go-back button
+
+
+
 export default class KenestoRouter extends React.Component {
-    
+      
     // getInitialState(){
     //     return{
     //         isLoggedIn : false, 
@@ -71,8 +89,6 @@ export default class KenestoRouter extends React.Component {
 
    
     render() {
-        
-
         return <Router createReducer={reducerCreate}>
             <Scene key="modal" component={Modal} >
                 <Scene key="root" hideNavBar={true}>
@@ -90,7 +106,7 @@ export default class KenestoRouter extends React.Component {
                   
                   
                   
-                  <Scene key="documents" direction="vertical" >
+                  <Scene key="documents" direction="vertical" navigationBarStyle={{ }} drawerImage={drawerImage} leftButtonIconStyle={styles.leftButtonIconStyle} backButtonImage={backButtonImage} leftButtonIconStyle={styles.leftButtonIconStyle} leftButtonStyle={styles.leftButtonStyle}>
                         <Scene key="documentsList" component={DocumentsScreen} title="Documents tab" hideTabBar={false} icon={TabIcon}/>
                          <Scene key="login2" component={Login2} title="Login2"/>
                         <Scene key="documentView" component={DocumentView}  hideTabBar={true} icon={TabIcon}/>

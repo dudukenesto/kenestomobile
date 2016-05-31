@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
          var { username, password } = this.state; 
          
        
-       //  username = "scott@kenestodemo.com"; 
-       //  password = "!QAZ@WSX";
+         username = "scott@kenestodemo.com"; 
+         password = "!QAZ@WSX";
         
          const {curEnv} = config.env;
 
