@@ -1,10 +1,10 @@
-import React, {View, Text, StyleSheet, AsyncStorage} from "react-native";
+import React, {View, Text, TextInput, StyleSheet, AsyncStorage, TouchableHighlight} from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import NavigationDrawer from '../components/NavigationDrawer'
 import config from '../utils/app.config';
+import ModalPicker from 'react-native-modal-picker'
 var stricturiEncode = require('strict-uri-encode');
-
 import DropDown, {
   Select,
   Option,
@@ -17,19 +17,36 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "transparent",
-    }
+    },
+    container2: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#532860',
+  },
+     button: {
+        borderRadius: 4,
+        padding: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        backgroundColor: "#B8C",
+  },
 });
 
+
 class KenestoLauncher extends React.Component {
+    
     
       constructor(props){
         super(props);
        // var isloggedIn = props != null && props.isLoggedIn != null? props.isLoggedIn : false;
      //   var sessionToken = props != null && props.sessionToken != null? props.sessionToken : "";
-     //   this.state = { isLoggedIn : isloggedIn, sessionToken : sessionToken};
+    //    this.state = { isVisible: false};
+       this.state = {
+            textInputValue: ''
+        }
      
-     
-      this.state = { isLoggedIn : false, sessionToken : "", env: "qa"};
+    
       
     }
 
@@ -37,11 +54,15 @@ class KenestoLauncher extends React.Component {
       this.setState({ isLoggedIn: isLoggedIn, sessionToken: sessionToken});
     }
     
+    
+    
    componentWillMount(){
+      
+      
+  
        
-     //  AsyncStorage.getAllKeys(function(){});
-       
-       
+         this.setState({ isLoggedIn : false, sessionToken : "", env: "qa"});
+         
         AsyncStorage.multiGet(["kenestoU", "kenestoP"]).then((res) => {
           var storedUserName = null; 
           var storedPassword = null;
@@ -68,29 +89,34 @@ class KenestoLauncher extends React.Component {
        this.setState({env: _env.id});
    }
    
-     _getOptionList() {
-    return this.refs['OPTIONLIST'];
-  }
-   
-   
-   _renderDeopdown(){
-       return ( <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Select
-            width={250}
-            ref="SELECT1"
-            optionListRef={this._getOptionList.bind(this)}
-            defaultValue="Select environment..."
-            onSelect={this._setEnv.bind(this)}>
-            <Option value = {{id : "localDev"}}>Local Dev</Option>
-            <Option value = {{id : "qa"}}>QA</Option>
-            <Option value = {{id : "staging"}}>Staging</Option>
-            <Option value = {{id : "production"}}>Production</Option>
-            
-          </Select>
+ 
+  
+  
 
-          <OptionList ref="OPTIONLIST"/>
-      </View>);
-   }
+  _renderModalPicker(){
+        let index = 0;
+        const data = [
+            { key: index++, section: true, label: 'Environments' },
+            { key: "dev", label: 'Local Dev' },
+            { key: "qa", label: 'QA' },
+            { key: "staging", label: 'Staging' },
+            { key: "production", label: 'Production' },
+        ];
+
+        return (
+            <View style={{flex:1, justifyContent:'space-around', padding:50}}>
+
+                <ModalPicker
+                    data={data}
+                    initValue="Select Environment"
+                    onChange={(option)=>{ this.setState({env: option.key }) }} />
+
+            </View>
+        );
+  }
+
+
+
    
   
    
@@ -164,8 +190,7 @@ class KenestoLauncher extends React.Component {
                     <Text>Welcome to Kenesto</Text>
                     <Text>Current environment: {this.state.env}</Text>
                     <Text>select environment</Text>
-                  
-                        {this._renderDeopdown()}
+                    {this._renderModalPicker()}
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                         
                             <Button onPress={()=>Actions.login({isLoggnedIn: this.state.isLoggedIn, env: this.state.env, sessionToken: this.state.sessionToken, updateLoginInfo: this.updateLoginInfo.bind(this) })}>Go to login</Button>
