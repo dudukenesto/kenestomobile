@@ -1,4 +1,4 @@
-import React, {View, Text, StyleSheet} from "react-native";
+import React, {View, Text, StyleSheet, AsyncStorage} from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 
@@ -30,11 +30,17 @@ export default class TabView extends React.Component {
         const drawer = this.context.drawer;
         return (
             <View style={[styles.container, this.props.sceneStyle]}>
-                <Button onPress={() => {drawer.close();Actions.launch();}}>Log off</Button>
+                <Button onPress={() => {drawer.close();this._ClearCredentials(); Actions.launch();}}>Log off</Button>
             </View>
         );
     }
+    
+    _ClearCredentials(){
+        AsyncStorage.multiRemove(["kenestoU","kenestoP"]); 
+    }
 }
+
+
 
 TabView.contextTypes = {
     drawer: React.PropTypes.object

@@ -6,6 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "lodash": "^4.13.1",
     "react": "^0.14.8",
     "react-native": "^0.23.1",
     "react-native-button": "^1.4.2",

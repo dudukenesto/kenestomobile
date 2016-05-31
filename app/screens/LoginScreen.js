@@ -1,4 +1,4 @@
-import React, {View, Text, TextInput, StyleSheet, TouchableHighlight} from "react-native";
+import React, {View, Text, TextInput, StyleSheet, TouchableHighlight, AsyncStorage} from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import config from '../utils/app.config';
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
          
         var {AuthUrlTemplate, LoginUrlTemplate} = config.dev;
         
-         username = "scott@kenestodemo.com"; 
-         password = "!QAZ@WSX";
+       //  username = "scott@kenestodemo.com"; 
+       //  password = "!QAZ@WSX";
 
      //    const {curEnv} = config.env;
          
@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
                         Actions.error({data: 'Login failed'})
                     })
                     .then( (responseData) => {
-                        
+                        AsyncStorage.setItem("kenestoU", username); 
+                        AsyncStorage.setItem("kenestoP", password); 
                         Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: this.state.env});
                         
                     }).done();
@@ -100,37 +101,8 @@ const styles = StyleSheet.create({
         }).done();
          
    
-//    fetch(this._urlForQueryAndPage(query, 1))
-//       .then((response) => response.json())
-//       .catch((error) => {
-//         LOADING[query] = false;
-//         resultsCache.dataForQuery[query] = undefined;
-
-//         this.setState({
-//           dataSource: this.getDataSource([]),
-//           isLoading: false,
-//         });
-//       })
-//       .then((responseData) => {
-//         LOADING[query] = false;
-//         resultsCache.totalForQuery[query] = responseData.total;
-//         resultsCache.dataForQuery[query] = responseData.documents;
-//         resultsCache.nextPageNumberForQuery[query] = 2;
-
-//         if (this.state.filter !== query) {
-//           // do not update state if the query is stale
-//           return;
-//         }
-
-//         this.setState({
-//           isLoading: false,
-//           dataSource: this.getDataSource(responseData.documents),
-//         });
-//       })
-//       .done();
-
-   
     }
+    
     render(){
       
         return (
