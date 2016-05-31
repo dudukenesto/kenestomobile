@@ -34,21 +34,40 @@ const styles = StyleSheet.create({
             this.state = {
             username: "",
             password: "",
+            env: props.env
          }
       }
    
     _makeLogin(){
      
        
-         var { username, password } = this.state; 
+         var { username, password, env } = this.state; 
          
-       
+        var {AuthUrlTemplate, LoginUrlTemplate} = config.dev;
+        
          username = "scott@kenestodemo.com"; 
          password = "!QAZ@WSX";
-        
-         const {curEnv} = config.env;
 
-        var {AuthUrlTemplate, LoginUrlTemplate} = curEnv == 'dev' ?  config.dev : config.qa;
+     //    const {curEnv} = config.env;
+         
+         switch (env) {
+             case 'qa':
+                
+                  AuthUrlTemplate = config.qa.AuthUrlTemplate; 
+                  LoginUrlTemplate = config.qa.LoginUrlTemplate; 
+                 break;
+            case 'staging':
+                  AuthUrlTemplate = config.staging.AuthUrlTemplate; 
+                  LoginUrlTemplate = config.staging.LoginUrlTemplate; 
+                     break;
+            case 'production':
+                  AuthUrlTemplate = config.production.AuthUrlTemplate; 
+                  LoginUrlTemplate = config.production.LoginUrlTemplate; 
+             default:
+                 break;
+         }
+
+       
     
         var authUrl = AuthUrlTemplate.replace('{0}', username).replace('{1}', password); 
     
@@ -73,9 +92,7 @@ const styles = StyleSheet.create({
                     })
                     .then( (responseData) => {
                         
-                      // Actions.tabbar({ sessionToken: 'kuku'});
-                      
-                        Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token});
+                        Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: this.state.env});
                         
                     }).done();
             }

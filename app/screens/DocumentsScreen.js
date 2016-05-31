@@ -77,6 +77,7 @@ var DocumentsScreen = React.createClass({
       folderName: "",
       foldersTrail : [],
       parentFolderId : null,
+      env: this.props.env,
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
@@ -89,7 +90,7 @@ var DocumentsScreen = React.createClass({
    
     
   //  this.setState({folderId: this.props.folderId, parentFolderId: this.props.parentFolderId, parentFolderName: this.props.parentFolderName });
-    
+   
     this.searchDocuments('');
   },
 
@@ -149,9 +150,26 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
       isLoadingTail: false,
     });
     const sessionToken  = encodeURIComponent(this.props.sessionToken)
-    const {curEnv} = config.env;
+    var {env} = this.state;
+    //const {curEnv} = config.env;
+    
+     var {ApiBaseUrl} = config.dev 
+     
+    
 
-    const {ApiBaseUrl} = curEnv == 'dev' ?  config.dev : config.qa;
+     switch (env) {
+             case 'qa':
+                  ApiBaseUrl = config.qa.ApiBaseUrl; 
+                 break;
+            case 'staging':
+                  LoginUrlTemplate = config.staging.ApiBaseUrl; 
+                     break;
+            case 'production':
+                  LoginUrlTemplate = config.production.ApiBaseUrl; 
+             default:
+                 break;
+         }
+         
     
     var docsUrl = `${ApiBaseUrl}/KDocuments.svc/RetrieveDocuments?t=${sessionToken}&fid=${fId}`;
     var folderName = '';
