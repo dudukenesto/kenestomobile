@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
        
          var { username, password, env } = this.state; 
          
+
         var {AuthUrlTemplate, LoginUrlTemplate} = config.dev;
         
        //  username = "scott@kenestodemo.com"; 
