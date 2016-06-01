@@ -457,7 +457,7 @@ var styles = StyleSheet.create({
   backButton: {
     color: "#0a3a60",
     fontWeight:"normal",
-    fontSize:14
+    fontSize:20
   },
 });
 
