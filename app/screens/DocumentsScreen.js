@@ -369,7 +369,7 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
   },
 
   render: function() {
-    var   backButton = this.state.folderId != null ?   <Button onPress={ (()=> this.GoBack())}>back</Button> : null;
+    var   backButton = this.state.folderId != null ?   <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>back</Button> : null;
     var content = this.state.dataSource.getRowCount() === 0 ?
       <NoDocuments
         filter={this.state.filter}
@@ -396,9 +396,10 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
           onFocus={() =>
             this.refs.listview && this.refs.listview.getScrollResponder().scrollTo({ x: 0, y: 0 })}
         />
-        <Text>{this.state.folderName}</Text>
+        <View style={{flexDirection:"row"}}>
         {backButton}
-        
+          <Text style={styles.backButton}> > {this.state.folderName}</Text>
+        </View>
         <View style={styles.separator} />
         {content}
       </View>
@@ -452,6 +453,11 @@ var styles = StyleSheet.create({
   },
   rowSeparatorHide: {
     opacity: 0.0,
+  },
+  backButton: {
+    color: "#0a3a60",
+    fontWeight:"normal",
+    fontSize:14
   },
 });
 

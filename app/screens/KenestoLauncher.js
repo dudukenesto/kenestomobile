@@ -1,4 +1,4 @@
-import React, {View, Text, TextInput, StyleSheet, AsyncStorage, TouchableHighlight} from "react-native";
+import React, {View, Text, TextInput, StyleSheet, AsyncStorage, TouchableHighlight, PixelRatio} from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import NavigationDrawer from '../components/NavigationDrawer'
@@ -109,7 +109,15 @@ class KenestoLauncher extends React.Component {
                 <ModalPicker
                     data={data}
                     initValue="Select Environment"
-                    onChange={(option)=>{ this.setState({env: option.key }) }} />
+                    onChange={(option)=>{ this.setState({env: option.key }) }}
+                    selectStyle={{backgroundColor:"white", borderColor:"#888", borderWidth:2/PixelRatio.get()}}
+                    selectTextStyle={{color:"#ff6a00"}}
+                    sectionStyle={{height:130}}
+                    sectionTextStyle={{color:"#000"}}
+                    optionTextStyle={{color:"#ff6a00"}}
+                    cancelStyle={{backgroundColor:"#fff"}}
+                    cancelTextStyle={{color:"#000"}}
+                     />
 
             </View>
         );
@@ -188,7 +196,10 @@ class KenestoLauncher extends React.Component {
             return (
                 <View {...this.props}  style={styles.container}>
                     <Text>Welcome to Kenesto</Text>
-                    <Text>Current environment: {this.state.env}</Text>
+                    <View style={{flexDirection:"row"}}>
+                        <Text>Current environment: </Text>
+                        <Text style={{color:"#ff6a00"}}>{this.state.env}</Text>
+                    </View>
                     <Text>select environment</Text>
                     {this._renderModalPicker()}
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
