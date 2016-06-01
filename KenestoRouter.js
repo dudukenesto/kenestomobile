@@ -92,8 +92,8 @@ export default class KenestoRouter extends React.Component {
         return <Router createReducer={reducerCreate}>
             <Scene key="modal" component={Modal} >
                 <Scene key="root" hideNavBar={true}>
-                <Scene key="launch" component={KenestoLauncher} title="Launch"  initial={true}/>
-                <Scene key="WebViewExample" component={WebViewExample}  hideTabBar={true} icon={TabIcon}  />
+                <Scene key="launch" component={KenestoLauncher} title="Launch" initial={true}  />
+                <Scene key="WebViewExample" component={WebViewExample}  hideTabBar={true} icon={TabIcon} />
                 <Scene key="register" component={RegisterScreen} title="Register"/>
                 <Scene key="login" component={LoginScreen} title="Login" />
                 <Scene key="loginbaba" component={Login2} title="Loginbaba" />

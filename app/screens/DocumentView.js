@@ -19,6 +19,9 @@ var TEXT_INPUT_REF = 'urlInput';
 var WEBVIEW_REF = 'webview';
 var DEFAULT_URL = 'www.one.co.il';
 
+import ViewTransformer from 'react-native-view-transformer';
+
+
 class DocumentView extends React.Component{
   constructor(props){
     super(props);
@@ -36,16 +39,23 @@ class DocumentView extends React.Component{
   
   render(){
     var sessionToken = this.state.sessionToken;
-     debugger;
     return(
      
- 
+     
+      <ViewTransformer
+        onGestureEnd={(e) => {
+          console.log('onGestureEnd...' + JSON.stringify(e))
+          return false;
+        }}
+        enableResistance={true}
+        maxScale={20}
+        style={{flex: 1}}>
           <View style={{ flex: 1}}>
         <WebView
           style={{ backgroundColor: BGWASH, position: 'absolute',top: 0, bottom: 0, left: 0, right: 0}}
       //    style = {{height: 700}}
          source={{uri: this.state.viewerUrl}}
-        //  source={{uri: 'http://localhost/PLMPlus.UI.Client/UserExternal/GetViewerUrl?isExternal=True&token=MDEwL1NvYXZhSzNqUVpWajlkSmE5alFkbTNhMXREaXB5NC9sVXEraUNFcUFPN2RFZjd1UVlxNnhicmF2OVQxdDYxK2hWVEkxWlRsQ1BGNlh6SE16cVQ0Rk9MSlR5YjZBclVmdFdRKzBaTUZMUEc2WU1Ca1FqbncwS3BkdXg2K2ZhdE1yeDl0NjNvY1ZCYUlpVnEvL3o0UVN6YW9ENTNLWTd5RElJSWJVWWlZPQ2&assetId=8cd8b1bb-5528-40e2-99c8-779bf951d100&AssetFamilyCode=GENERAL&useInternalToken=False&useItemVersion=True&isSessionToken=True&mobile=True'}}
+        //  source={{uri: 'http://10.0.0.184//default.aspx?t=1&document=http://10.0.0.117/Kenesto/File/ExternalFileWithTokenAsAction/MDEwJTJmU29hdmFLM2pRWlZqOWRKYTlqUWRtM2ExdERpcHk0JTJmbFVxJTJiaUNFcUFPN2RFZjd1UVlxNnhicmF2OVQxdCUyYm0yQmc5U2hPUG1jRFVFQ0htWGlIT1hCT1NHUyUyYmsxNWY2S3JyNHlRZDczdUxsVXZlRlFKckNNVml2QnVVWkxKJTJmY0VGekdRaXlqdTZ4SlglMmZnY1llN0R3bkhyalYlMmJSQ1k2M0JPZmNZSjFhRSUzZA==/0d18f9b6-c528-4ea4-99c6-7effa5037a7b.docx'}}
           
             javaScriptEnabled={true}
             domStorageEnabled={true}
@@ -54,6 +64,9 @@ class DocumentView extends React.Component{
         />
        
       </View>
+      </ViewTransformer>
+ 
+        
     )
   }
   
