@@ -369,8 +369,8 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
 
   render: function() {
     var   breadCrums = this.state.folderId != null ?    <View style={{flexDirection:"row"}}>
-        <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>back</Button>
-          <Text style={styles.backButton}> > {this.state.folderName}</Text>
+        <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>...</Button>
+          <Text style={styles.backButton}>  {this.state.folderName}</Text>
      </View> : null;
     
   
