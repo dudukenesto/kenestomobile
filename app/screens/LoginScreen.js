@@ -1,7 +1,9 @@
-import React, {View, Text, TextInput, StyleSheet, TouchableHighlight, AsyncStorage} from "react-native";
+import React, {View, Text, TextInput, StyleSheet, TouchableHighlight, AsyncStorage, } from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import config from '../utils/app.config';
+import ProggressBar from "../components/ProgressBar";
+
 var stricturiEncode = require('strict-uri-encode');
 
 const styles = StyleSheet.create({
@@ -21,6 +23,10 @@ const styles = StyleSheet.create({
         color: "#333333",
         marginBottom: 5,
     },
+     spinner: {
+        width: 30,
+        height: 30,
+   },
 });
 
 
@@ -34,13 +40,14 @@ const styles = StyleSheet.create({
             this.state = {
             username: "",
             password: "",
-            env: props.env
+            env: props.env, 
+            isLoading: false
          }
       }
    
     _makeLogin(){
      
-       
+        this.setState({isLoading: true});
          var { username, password, env } = this.state; 
          
 
@@ -75,7 +82,7 @@ const styles = StyleSheet.create({
         fetch(authUrl)
         .then((response) => response.json())
         .catch((error) => {
-            
+            this.updateIsLoading(false);
              Actions.error({data: 'authentication failed'})
         })
         .then( (responseData) => {
@@ -89,12 +96,13 @@ const styles = StyleSheet.create({
                     
                     fetch(loginUrl).then((response) => response.json())
                     .catch((error) => {
+                         this.updateIsLoading(false);
                         Actions.error({data: 'Login failed'})
                     })
                     .then( (responseData) => {
                         AsyncStorage.setItem("kenestoU", username); 
                         AsyncStorage.setItem("kenestoP", password); 
-                        Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: this.state.env});
+                        Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: this.state.env, loggedUser: username});
                         
                     }).done();
             }
@@ -104,17 +112,40 @@ const styles = StyleSheet.create({
    
     }
     
+    updateIsLoading(_isLoading){
+        this.setState({isLoading: _isLoading})
+    }
+    
+    
+    renderProgressBar(){
+        if (this.state.isLoading){
+            return(
+            <ProggressBar isLoading={false} />
+            )
+        }
+        else{
+            return(
+                <ProggressBar isLoading={true} />
+            )
+            
+            }
+        
+        }
+   
+
+    
     render(){
       
         return (
             <View style={[styles.container, this.props.style]}>
+          {this.renderProgressBar()}
                  <TextInput
           autoFocus={true}
           value={this.state.username}
           onChangeText={username => this.setState({username})}
         
         />
-
+        
         <TextInput
           ref="password"
           value={this.state.password} secureTextEntry={true}

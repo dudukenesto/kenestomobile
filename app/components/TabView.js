@@ -28,8 +28,11 @@ export default class TabView extends React.Component {
         var Button = require("react-native-button");
         var Actions = require("react-native-router-flux").Actions;
         const drawer = this.context.drawer;
+
         return (
             <View style={[styles.container, this.props.sceneStyle]}>
+             <Text>Logged in as</Text>
+            <Text>{this.props.loggedUser}</Text>
                 <Button onPress={() => {drawer.close();this._ClearCredentials(); Actions.launch();}}>Log off</Button>
             </View>
         );

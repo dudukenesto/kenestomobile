@@ -10,7 +10,7 @@ export default class extends Component {
             <Drawer
                 ref="navigation"
                 type="displace"
-                content={<TabView />}
+                content={<TabView loggedUser = {this.props.loggedUser}/>}
                 tapToClose={true}
                 openDrawerOffset={0.2}
                 panCloseMask={0.2}

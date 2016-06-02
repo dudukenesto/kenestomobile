@@ -180,7 +180,7 @@ class KenestoLauncher extends React.Component {
                     })
                     .then( (responseData) => {
                         
-                        Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: this.state.env});
+                        Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: this.state.env, loggedUser: username});
                         
                     }).done();
             }

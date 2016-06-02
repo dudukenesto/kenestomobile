@@ -127,7 +127,6 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
      
      var fId = this.state.folderId == null? '00000000-0000-0000-0000-000000000000' :this.state.folderId;
 
- //   alert(fid)
     var cachedResultsForQuery = resultsCache.dataForQuery[query];
     if (cachedResultsForQuery && 1 == 2) {
      
@@ -369,7 +368,14 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
   },
 
   render: function() {
-    var   backButton = this.state.folderId != null ?   <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>back</Button> : null;
+    var   breadCrums = this.state.folderId != null ?    <View style={{flexDirection:"row"}}>
+        <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>back</Button>
+          <Text style={styles.backButton}> > {this.state.folderName}</Text>
+     </View> : null;
+    
+  
+        
+        
     var content = this.state.dataSource.getRowCount() === 0 ?
       <NoDocuments
         filter={this.state.filter}
@@ -396,10 +402,7 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
           onFocus={() =>
             this.refs.listview && this.refs.listview.getScrollResponder().scrollTo({ x: 0, y: 0 })}
         />
-        <View style={{flexDirection:"row"}}>
-        {backButton}
-          <Text style={styles.backButton}> > {this.state.folderName}</Text>
-        </View>
+        {breadCrums}
         <View style={styles.separator} />
         {content}
       </View>
