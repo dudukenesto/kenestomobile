@@ -4,6 +4,7 @@ import {Actions} from "react-native-router-flux";
 import NavigationDrawer from '../components/NavigationDrawer'
 import config from '../utils/app.config';
 import ModalPicker from 'react-native-modal-picker'
+import ProggressBar from "../components/ProgressBar";
 var stricturiEncode = require('strict-uri-encode');
 import DropDown, {
   Select,
@@ -43,7 +44,9 @@ class KenestoLauncher extends React.Component {
      //   var sessionToken = props != null && props.sessionToken != null? props.sessionToken : "";
     //    this.state = { isVisible: false};
        this.state = {
-            textInputValue: ''
+            textInputValue: '',
+            isloggedIn: false, 
+            env: 'qa'
         }
      
     
@@ -58,11 +61,8 @@ class KenestoLauncher extends React.Component {
     
    componentWillMount(){
       
-      
-  
-       
-         this.setState({ isLoggedIn : false, sessionToken : "", env: "qa"});
-         
+            var isloggedIn = false;
+            
         AsyncStorage.multiGet(["kenestoU", "kenestoP"]).then((res) => {
           var storedUserName = null; 
           var storedPassword = null;
@@ -75,12 +75,17 @@ class KenestoLauncher extends React.Component {
                     storedPassword = val;
             });
 
-               if (storedPassword != null && storedUserName != null )
-                    this._makeLogin(storedUserName, storedPassword);
+            
+               if (storedPassword != null && storedUserName != null)
+               {
+                   this._makeLogin(storedUserName, storedPassword);
+                   isloggedIn = true;
+               }
+               
+               this.setState({ isloggedIn : isloggedIn});
+               
          }).done();
-       
-      // if (this.state.isLoggedIn)
-      //      Actions.tabbar();
+
             
    }
    
@@ -124,7 +129,9 @@ class KenestoLauncher extends React.Component {
   }
 
 
-
+ _ClearCredentials(){
+        AsyncStorage.multiRemove(["kenestoU","kenestoP"]); 
+    }
    
   
    
@@ -168,7 +175,11 @@ class KenestoLauncher extends React.Component {
         .then( (responseData) => {
         
             if (responseData.AuthenticateJsonResult.ResponseStatus == "FAILED")
-                 Actions.error({data: 'authentication failed'}); 
+            {
+                 this._ClearCredentials();
+                  Actions.error({data: 'authentication failed'}); 
+            }
+              
             else{
                     var organizationId = responseData.AuthenticateJsonResult.Organizations[0].OrganizationIdentifier; 
                     var Token = stricturiEncode(responseData.AuthenticateJsonResult.Token);
@@ -176,10 +187,11 @@ class KenestoLauncher extends React.Component {
                     
                     fetch(loginUrl).then((response) => response.json())
                     .catch((error) => {
+                        this._ClearCredentials();
                         Actions.error({data: 'Login failed'})
                     })
                     .then( (responseData) => {
-                        
+                      
                         Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: this.state.env, loggedUser: username});
                         
                     }).done();
@@ -192,7 +204,16 @@ class KenestoLauncher extends React.Component {
     
    
     render(){
-               
+            if (this.state.isloggedIn)
+            {
+                return(
+                      <View {...this.props}  style={styles.container}>
+                    <Text>Welcome to Kenesto</Text>
+                    <Text>Please wait...</Text>
+                     <ProggressBar isLoading={true} />
+                </View>
+                )
+            }
             return (
                 <View {...this.props}  style={styles.container}>
                     <Text>Welcome to Kenesto</Text>

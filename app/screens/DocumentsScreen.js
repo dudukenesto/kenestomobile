@@ -25,6 +25,7 @@ var {
   StyleSheet,
   Text,
   View,
+  RefreshControl
 } = ReactNative;
 var TimerMixin = require('react-timer-mixin');
 
@@ -77,6 +78,7 @@ var DocumentsScreen = React.createClass({
       folderName: "",
       foldersTrail : [],
       parentFolderId : null,
+      refreshing: false,
       env: this.props.env,
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
@@ -176,13 +178,13 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
      var responseData =  fetch(docsUrl).then((response) => response.json())
                     .catch((error) => {
                         //Actions.error({data: 'get documents faliled failed'})
-                        alert('failed to get docs')
+                         Actions.error({data: 'Failed to get documents'})
                     })
                     .then( (responseData) => {
-                     
-                       if (responseData.ResoponseStatus == 'FAILED')
+
+                       if (responseData.ResponseStatus == 'FAILED')
                        {
-                         alert('failed');
+                          Actions.error({data: 'Action failed'})
                        }
                        
                           LOADING[query] = false;
@@ -199,9 +201,12 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
                             folderName: folderName,
                             filter: query,
                             isLoading: false,
+                            refreshing: false,
                             dataSource: this.getDataSource(responseData.ResponseData.DocumentsList) 
                           });
-                    }).done();
+                    }).done(
+               
+                    );
   },
 
   hasMore: function(): boolean {
@@ -366,6 +371,10 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
      this.setState({folderId: fid });
      this.searchDocuments('')
   },
+   _onRefresh: function(){
+      this.setState({refreshing: true});
+     this.searchDocuments('');
+    },
 
   render: function() {
     var   breadCrums = this.state.folderId != null ?    <View style={{flexDirection:"row"}}>
@@ -374,15 +383,22 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
      </View> : null;
     
   
-        
+   
         
     var content = this.state.dataSource.getRowCount() === 0 ?
       <NoDocuments
         filter={this.state.filter}
         isLoading={this.state.isLoading}
+        onRefresh={this._onRefresh}
       /> :
       <ListView
         ref="listview"
+         refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
         renderSeparator={this.renderSeparator}
         dataSource={this.state.dataSource}
         renderFooter={this.renderFooter}
@@ -392,7 +408,8 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps={true}
         showsVerticalScrollIndicator={false}
-      />;
+      />
+      ;
 
     return (
       <View style={styles.container}>
@@ -424,6 +441,7 @@ var NoDocuments = React.createClass({
     return (
       <View style={[styles.container, styles.centerText]}>
         <Text style={styles.noDocumentsText}>{text}</Text>
+         <Button onPress={this.props.onRefresh}>refresh</Button>
       </View>
     );
   }

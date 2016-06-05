@@ -44,9 +44,14 @@ const styles = StyleSheet.create({
             isLoading: false
          }
       }
+      
+      
+ _ClearCredentials(){
+        AsyncStorage.multiRemove(["kenestoU","kenestoP"]); 
+    }
    
     _makeLogin(){
-     
+       
         this.setState({isLoading: true});
          var { username, password, env } = this.state; 
          
@@ -88,16 +93,23 @@ const styles = StyleSheet.create({
         .then( (responseData) => {
         
             if (responseData.AuthenticateJsonResult.ResponseStatus == "FAILED")
+            {
+                  this.updateIsLoading(false);
                  Actions.error({data: 'authentication failed'}); 
+                  this._ClearCredentials();
+            }
+                
             else{
                     var organizationId = responseData.AuthenticateJsonResult.Organizations[0].OrganizationIdentifier; 
                     var Token = stricturiEncode(responseData.AuthenticateJsonResult.Token);
                     var loginUrl = LoginUrlTemplate.replace('{0}', organizationId).replace('{1}', Token);
                     
+         
                     fetch(loginUrl).then((response) => response.json())
                     .catch((error) => {
+                         this._ClearCredentials();
                          this.updateIsLoading(false);
-                        Actions.error({data: 'Login failed'})
+                         Actions.error({data: 'Login failed'})
                     })
                     .then( (responseData) => {
                         AsyncStorage.setItem("kenestoU", username); 
@@ -120,12 +132,12 @@ const styles = StyleSheet.create({
     renderProgressBar(){
         if (this.state.isLoading){
             return(
-            <ProggressBar isLoading={false} />
+            <ProggressBar isLoading={true} />
             )
         }
         else{
             return(
-                <ProggressBar isLoading={true} />
+                <ProggressBar isLoading={false} />
             )
             
             }
