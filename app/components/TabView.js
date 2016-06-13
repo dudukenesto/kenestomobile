@@ -35,6 +35,7 @@ export default class TabView extends React.Component {
             <Text>{this.props.loggedUser}</Text>
                 <Button onPress={() => {drawer.close();this._ClearCredentials(); Actions.launch();}}>Log off</Button>
             </View>
+            
         );
     }
     

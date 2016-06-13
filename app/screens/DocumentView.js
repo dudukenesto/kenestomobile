@@ -103,7 +103,7 @@ class DocumentView extends React.Component{
     // / alert(this.state.viewerUrl);
     return(
     
-     
+        
    
           <View style={{ flex: 1 }}>
       
