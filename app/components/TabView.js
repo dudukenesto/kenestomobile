@@ -39,7 +39,7 @@ export default class TabView extends React.Component {
     }
     
     _ClearCredentials(){
-        AsyncStorage.multiRemove(["kenestoU","kenestoP"]); 
+        AsyncStorage.multiRemove(["kenestoU","kenestoP", "env"]); 
     }
 }
 

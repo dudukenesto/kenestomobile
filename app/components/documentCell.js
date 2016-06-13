@@ -38,18 +38,15 @@ var DocumentCell = React.createClass({
       TouchableElement = TouchableNativeFeedback;
     }
     
-    var imageSource = require('../assets/images/folder_icon.png'); 
+    var imageSource = require('../assets/images/thumbnail_img.png'); 
            
     if (this.props.document.HasThumbnail)
       imageSource ={uri: this.props.document.ThumbnailUrl}
-     
- 
+
     if (this.props.document.FamilyCode == 'FOLDER')
       imageSource = require('../assets/images/folder_icon.png'); 
-      
-     
-        
 
+    
     return (
       <View>
         <TouchableElement

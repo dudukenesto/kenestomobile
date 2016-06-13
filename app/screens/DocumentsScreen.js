@@ -163,10 +163,10 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
                   ApiBaseUrl = config.qa.ApiBaseUrl; 
                  break;
             case 'staging':
-                  LoginUrlTemplate = config.staging.ApiBaseUrl; 
+                  ApiBaseUrl = config.staging.ApiBaseUrl; 
                      break;
             case 'production':
-                  LoginUrlTemplate = config.production.ApiBaseUrl; 
+                  ApiBaseUrl = config.production.ApiBaseUrl; 
              default:
                  break;
          }
@@ -378,7 +378,7 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
 
   render: function() {
     var   breadCrums = this.state.folderId != null ?    <View style={{flexDirection:"row"}}>
-        <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>...</Button>
+        <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>     ...  </Button>
           <Text style={styles.backButton}>  {this.state.folderName}</Text>
      </View> : null;
     

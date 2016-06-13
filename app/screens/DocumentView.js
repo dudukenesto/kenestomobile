@@ -18,8 +18,9 @@ var DISABLED_WASH = 'rgba(255,255,255,0.25)';
 var TEXT_INPUT_REF = 'urlInput';
 var WEBVIEW_REF = 'webview';
 var DEFAULT_URL = 'www.one.co.il';
-
+import ProggressBar from "../components/ProgressBar";
 import ViewTransformer from 'react-native-view-transformer';
+
 
 
 class DocumentView extends React.Component{
@@ -30,6 +31,7 @@ class DocumentView extends React.Component{
       sessionToken : props.sessionToken,
       viewerUrl: props.viewerUrl,
       url: DEFAULT_URL,
+      isLoading: true,
      // status: 'No Page Loaded',
      // backButtonEnabled: false,
      // forwardButtonEnabled: false,
@@ -37,35 +39,87 @@ class DocumentView extends React.Component{
       scalingEnabled: true};
   }
   
+  
+    //  <ViewTransformer
+    //     onGestureEnd={(e) => {
+    //       console.log('onGestureEnd...' + JSON.stringify(e))
+    //       return false;
+    //     }}
+    //     enableResistance={true}
+    //     maxScale={20}
+    //     style={{flex: 1}}>
+    //       <View style={{ flex: 1}}>
+    //     <WebView
+    //       style={{ backgroundColor: BGWASH, position: 'absolute',top: 0, bottom: 0, left: 0, right: 0}}
+    //      source={{uri: this.state.viewerUrl}}
+          
+    //         javaScriptEnabled={true}
+    //         domStorageEnabled={true}
+         
+    //       scalesPageToFit={true}
+    //     />
+       
+    //   </View>
+    //   </ViewTransformer>
+
+ 
+ onLoadEnd(){
+    this.setState({isLoading: false});
+ }
+ 
+ renderLoading(){
+
+   return(
+    <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 80}}>
+      <ProggressBar isLoading={true} />
+    </View>
+   )
+ }
+ 
+      // <ViewTransformer
+      //   onGestureEnd={(e) => {
+      //     console.log('onGestureEnd...' + JSON.stringify(e))
+      //     return false;
+      //   }}
+      //   enableResistance={true}
+      //   maxScale={3}
+      //   style={{flex: 1}}>
+      //     <View style={{ flex: 1}}>
+      //   <WebView
+      //     style={{ backgroundColor: BGWASH, position: 'absolute',top: 0, bottom: 0, left: 0, right: 0}}
+      //   // source={{uri: this.state.viewerUrl}}
+      //     source={{uri: "http://10.0.0.105/static/hoops_web_viewer/client_side_renderer/hoops_web_viewer_mobile.html?/static/tempcache/session-db2ac1c3f805234f3b3f2e7d156971007db37c43/2c6407c0-b340-43e2-97e8-eb6c76cd6c6c.hsf"}}
+      //       javaScriptEnabled={true}
+      //       domStorageEnabled={true}
+         
+      //     scalesPageToFit={false}
+      //   />
+       
+      // </View>
+      // </ViewTransformer>
+  
   render(){
     var sessionToken = this.state.sessionToken;
+    // / alert(this.state.viewerUrl);
     return(
+    
      
-     
-      <ViewTransformer
-        onGestureEnd={(e) => {
-          console.log('onGestureEnd...' + JSON.stringify(e))
-          return false;
-        }}
-        enableResistance={true}
-        maxScale={20}
-        style={{flex: 1}}>
-          <View style={{ flex: 1}}>
-        <WebView
-          style={{ backgroundColor: BGWASH, position: 'absolute',top: 0, bottom: 0, left: 0, right: 0}}
-      //    style = {{height: 700}}
-         source={{uri: this.state.viewerUrl}}
-        //  source={{uri: 'http://10.0.0.184//default.aspx?t=1&document=http://10.0.0.117/Kenesto/File/ExternalFileWithTokenAsAction/MDEwJTJmU29hdmFLM2pRWlZqOWRKYTlqUWRtM2ExdERpcHk0JTJmbFVxJTJiaUNFcUFPN2RFZjd1UVlxNnhicmF2OVQxdCUyYm0yQmc5U2hPUG1jRFVFQ0htWGlIT1hCT1NHUyUyYmsxNWY2S3JyNHlRZDczdUxsVXZlRlFKckNNVml2QnVVWkxKJTJmY0VGekdRaXlqdTZ4SlglMmZnY1llN0R3bkhyalYlMmJSQ1k2M0JPZmNZSjFhRSUzZA==/0d18f9b6-c528-4ea4-99c6-7effa5037a7b.docx'}}
-          
-            javaScriptEnabled={true}
-            domStorageEnabled={true}
-         
-          scalesPageToFit={true}
-        />
+   
+          <View style={{ flex: 1 }}>
+      
+             <WebView
+                    style={styles.webview_body}
+                  source={{uri: this.state.viewerUrl}}
+                   onLoadEnd={this.onLoadEnd.bind(this)}
+                      javaScriptEnabled={true}
+                      domStorageEnabled={true}
+                     startInLoadingState={true}
+                    scalesPageToFit={true}
+                    renderLoading={this.renderLoading}
+                  />
        
       </View>
-      </ViewTransformer>
- 
+
         
     )
   }
@@ -176,7 +230,30 @@ var styles = StyleSheet.create({
     borderColor: 'gray',
     borderWidth: 1,
     backgroundColor: 'gray',
+    
   },
+  
+  webview_header: {
+        paddingLeft: 10,
+        backgroundColor: '#FF6600',
+        flex: 1,
+        justifyContent: 'space-between',
+        flexDirection: 'row'
+    },
+    header_item: {
+        paddingLeft: 10,
+        paddingRight: 10,
+        justifyContent: 'center'
+    },
+    webview_body: {
+        flex: 9
+    },
+    
+    page_title: {
+        color: '#FFF'
+    },
+   
+  
 });
 
 module.exports = DocumentView;

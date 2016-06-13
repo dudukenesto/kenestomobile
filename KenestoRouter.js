@@ -9,7 +9,7 @@ import TasksScreen from './app/screens/TasksScreen'
 import DataScreen from './app/screens/DataScreen'
 import NavigationDrawer from './app/components/NavigationDrawer'
 import DocumentView from './app/screens/DocumentView'
-import WebViewExample from './app/screens/WebViewExample'
+import ImagePickerExample from './app/screens/ImagePickerExample'
 // import Login from './components/Login'
  import Login2 from'./app/screens/login2'
 
@@ -90,8 +90,8 @@ export default class KenestoRouter extends React.Component {
         return <Router createReducer={reducerCreate}>
             <Scene key="modal" component={Modal} >
                 <Scene key="root" hideNavBar={true}>
-                <Scene key="launch" component={KenestoLauncher} title="Launch" initial={true}  />
-                <Scene key="WebViewExample" component={WebViewExample}  hideTabBar={true} icon={TabIcon} />
+                <Scene key="launch" component={KenestoLauncher} title="Launch"  />
+                <Scene key="imagePicker" component={ImagePickerExample}  hideTabBar={true} icon={TabIcon}  initial={true}/>
                 <Scene key="register" component={RegisterScreen} title="Register"/>
                 <Scene key="login" component={LoginScreen} title="Login" />
                 <Scene key="loginbaba" component={Login2} title="Loginbaba" />
@@ -105,9 +105,9 @@ export default class KenestoRouter extends React.Component {
                   
                   
                   <Scene key="documents" direction="vertical" navigationBarStyle={{ }} drawerImage={drawerImage} leftButtonIconStyle={styles.leftButtonIconStyle} backButtonImage={backButtonImage} leftButtonIconStyle={styles.leftButtonIconStyle} leftButtonStyle={styles.leftButtonStyle}>
-                        <Scene key="documentsList" component={DocumentsScreen} title="Documents tab" hideTabBar={false} icon={TabIcon}/>
+                        <Scene key="documentsList" component={DocumentsScreen} title="All Documents" hideTabBar={false} icon={TabIcon}/>
                          <Scene key="login2" component={Login2} title="Login2"/>
-                        <Scene key="documentView" component={DocumentView}  hideTabBar={true} icon={TabIcon}/>
+                        <Scene key="documentView" component={DocumentView}  hideTabBar={false} icon={TabIcon}/>
                   </Scene>
                 
                     

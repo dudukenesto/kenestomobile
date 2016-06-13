@@ -46,7 +46,7 @@ class KenestoLauncher extends React.Component {
        this.state = {
             textInputValue: '',
             isloggedIn: false, 
-            env: 'qa'
+            env: 'staging'
         }
      
     
@@ -61,24 +61,27 @@ class KenestoLauncher extends React.Component {
     
    componentWillMount(){
       
-            var isloggedIn = false;
+         var isloggedIn = false;
             
-        AsyncStorage.multiGet(["kenestoU", "kenestoP"]).then((res) => {
+        AsyncStorage.multiGet(["kenestoU", "kenestoP", "env"]).then((res) => {
           var storedUserName = null; 
           var storedPassword = null;
+          var env = null
           res.map( (result, i, res) => {
                 let key = res[i][0];
                 let val = res[i][1];
                 if (key == "kenestoU")
                     storedUserName  = val;
-                else
+                else if (key == "kenestoP")
                     storedPassword = val;
+                 else
+                    env = val;
             });
 
             
                if (storedPassword != null && storedUserName != null)
                {
-                   this._makeLogin(storedUserName, storedPassword);
+                   this._makeLogin(storedUserName, storedPassword, env);
                    isloggedIn = true;
                }
                
@@ -130,15 +133,15 @@ class KenestoLauncher extends React.Component {
 
 
  _ClearCredentials(){
-        AsyncStorage.multiRemove(["kenestoU","kenestoP"]); 
+        AsyncStorage.multiRemove(["kenestoU","kenestoP", "env"]); 
     }
    
   
    
-  _makeLogin(username, password){
+  _makeLogin(username, password, env){
 
         var {AuthUrlTemplate, LoginUrlTemplate} = config.dev;
-          var {env} = this.state;
+        //  var {env} = this.state;
         
        //  username = "scott@kenestodemo.com"; 
        //  password = "!QAZ@WSX";
@@ -192,7 +195,7 @@ class KenestoLauncher extends React.Component {
                     })
                     .then( (responseData) => {
                       
-                        Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: this.state.env, loggedUser: username});
+                        Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: env, loggedUser: username});
                         
                     }).done();
             }

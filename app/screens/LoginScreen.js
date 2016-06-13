@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
       
       
  _ClearCredentials(){
-        AsyncStorage.multiRemove(["kenestoU","kenestoP"]); 
+        AsyncStorage.multiRemove(["kenestoU","kenestoP", "env"]); 
     }
    
     _makeLogin(){
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
                     .then( (responseData) => {
                         AsyncStorage.setItem("kenestoU", username); 
                         AsyncStorage.setItem("kenestoP", password); 
+                        AsyncStorage.setItem("env", this.state.env); 
                         Actions.tabbar({ sessionToken: responseData.LoginJsonResult.Token, env: this.state.env, loggedUser: username});
                         
                     }).done();
