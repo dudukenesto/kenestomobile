@@ -4,6 +4,7 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.imagepicker.ImagePickerPackage; // import package
+import com.rnfs.RNFSPackage;  // <--- import
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,10 +35,14 @@ public class MainActivity extends ReactActivity {
      * or modules besides the default ones, add more packages here.
      */
     @Override
-    protected List<ReactPackage> getPackages() {
+    protected List  <ReactPackage> getPackages() {
         return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
-            new ImagePickerPackage()
+            new ImagePickerPackage(),
+            new RNFSPackage() // <---------- add package
         );
     }
+
+    
+    
 }

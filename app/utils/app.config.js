@@ -1,5 +1,5 @@
 var config = {
-    env: { curEnv: 'qa'},
+    env: { curEnv: 'dev'},
     dev:{
          ApiBaseUrl : 'http://10.0.0.104/Kenesto.Web.API/', 
          AuthUrlTemplate: 'http://10.0.0.104/Kenesto.Web.API/Access.svc/Authenticate/json/null?u={0}&p={1}',

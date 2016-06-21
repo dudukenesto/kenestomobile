@@ -41,6 +41,9 @@ var SearchBar = require('SearchBar');
 import {Actions} from "react-native-router-flux";
 import Button from "react-native-button";
 import Folder from '../models/Folder';
+import Icon from 'react-native-vector-icons/Ionicons';
+import ActionButton from 'react-native-action-button';
+
 /**
  * This is for demo purposes only, and rate limited.
  * In case you want to use the Rotten Tomatoes' API on a real app you should
@@ -114,6 +117,10 @@ var DocumentsScreen = React.createClass({
 
 _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
     return "http://localhost/kenest.webApi/something";
+},
+
+updateLoadingState: function(isLoading: boolean){
+    this.setState({isLoading: isLoading, isLoadingTail: isLoading})
 },
 
   searchDocuments: function(query: string) {
@@ -422,6 +429,18 @@ _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
         {breadCrums}
         <View style={styles.separator} />
         {content}
+         <ActionButton buttonColor="rgba(231,76,60,1)">
+          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
+            <Icon name="android-create" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#3498db' title="Upload" onPress={() => Actions.error()}>
+            <Icon name="android-upload" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          
+          <ActionButton.Item buttonColor='#1abc9c' title="New Folder" onPress={() => Actions.createFolder({env: this.state.env, currentFolderId: this.state.folderId, sessionToken: this.props.sessionToken, afterCreateCallback: this._onRefresh, updateLoading: this.updateLoadingState })}>
+            <Icon name="folder" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+        </ActionButton>
       </View>
     );
   },
@@ -479,6 +498,11 @@ var styles = StyleSheet.create({
     color: "#0a3a60",
     fontWeight:"normal",
     fontSize:20
+  },
+   actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
   },
 });
 

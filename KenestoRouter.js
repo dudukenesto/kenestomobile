@@ -8,8 +8,11 @@ import DocumentsScreen from './app/screens/DocumentsScreen'
 import TasksScreen from './app/screens/TasksScreen'
 import DataScreen from './app/screens/DataScreen'
 import NavigationDrawer from './app/components/NavigationDrawer'
+import CreateFolder from './app/components/CreateFolder'
+
 import DocumentView from './app/screens/DocumentView'
 import ImagePickerExample from './app/screens/ImagePickerExample'
+import RNFSApp from './app/screens/test-fs'
 // import Login from './components/Login'
  import Login2 from'./app/screens/login2'
 
@@ -90,8 +93,9 @@ export default class KenestoRouter extends React.Component {
         return <Router createReducer={reducerCreate}>
             <Scene key="modal" component={Modal} >
                 <Scene key="root" hideNavBar={true}>
-                <Scene key="launch" component={KenestoLauncher} title="Launch"  />
-                <Scene key="imagePicker" component={ImagePickerExample}  hideTabBar={true} icon={TabIcon}  initial={true}/>
+                <Scene key="launch" component={KenestoLauncher} title="Launch"   initial={true} />
+                <Scene key="imagePicker" component={ImagePickerExample}  hideTabBar={true} icon={TabIcon}  />
+                <Scene key="testfs" component={RNFSApp}  hideTabBar={true} icon={TabIcon}  />
                 <Scene key="register" component={RegisterScreen} title="Register"/>
                 <Scene key="login" component={LoginScreen} title="Login" />
                 <Scene key="loginbaba" component={Login2} title="Loginbaba" />
@@ -122,6 +126,7 @@ export default class KenestoRouter extends React.Component {
                
                    
                 </Scene>
+                 <Scene key="createFolder" component={CreateFolder}/>
                 <Scene key="error" component={Error}/>
             </Scene>
         </Router>;
