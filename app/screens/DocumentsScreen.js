@@ -43,6 +43,12 @@ import Button from "react-native-button";
 import Folder from '../models/Folder';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ActionButton from 'react-native-action-button';
+import ViewContainer from '../components/ViewContainer';
+import KenestoHelper from '../utils/KenestoHelper';
+
+//var MessageBarAlert = require('react-native-message-bar').MessageBar;
+//var MessageBarManager = require('react-native-message-bar').MessageBarManager;
+
 
 /**
  * This is for demo purposes only, and rate limited.
@@ -91,9 +97,13 @@ var DocumentsScreen = React.createClass({
     };
   },
 
+  componentDidMount: function(){
+  //  MessageBarManager.registerMessageBar(this.refs.alert);
+  },
+
   componentWillMount: function() {
-   
     
+    //  MessageBarManager.unregisterMessageBar();
   //  this.setState({folderId: this.props.folderId, parentFolderId: this.props.parentFolderId, parentFolderName: this.props.parentFolderName });
    
     this.searchDocuments('');
@@ -378,9 +388,16 @@ updateLoadingState: function(isLoading: boolean){
      this.setState({folderId: fid });
      this.searchDocuments('')
   },
-   _onRefresh: function(){
-      this.setState({refreshing: true});
-     this.searchDocuments('');
+   _onRefresh: function(type: string, message: string){
+
+  this.setState({refreshing: true});
+      this.searchDocuments('');
+      
+      
+    if (!KenestoHelper.isNullOrEmpty(type) && !KenestoHelper.isNullOrEmpty(message))
+        this.refs.masterView.showMessage(type, message);
+    
+    
     },
 
   render: function() {
@@ -418,8 +435,18 @@ updateLoadingState: function(isLoading: boolean){
       />
       ;
 
+            // <StatusBarAlert
+      //   visible={true}
+      //   message="Silent Switch ON"
+      //   backgroundColor="#3CC29E"
+      //   color="blue"
+      // />
+      var additionalStyle = { };
+
     return (
-      <View style={styles.container}>
+      <ViewContainer  ref="masterView" style={[styles.container, additionalStyle]}>
+
+     
      <SearchBar
           onSearchChange={this.onSearchChange}
           isLoading={this.state.isLoading}
@@ -430,10 +457,10 @@ updateLoadingState: function(isLoading: boolean){
         <View style={styles.separator} />
         {content}
          <ActionButton buttonColor="rgba(231,76,60,1)">
-          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
+          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => this._onRefresh('info', 'wawa ziba and his group')}>
             <Icon name="android-create" style={styles.actionButtonIcon} />
           </ActionButton.Item>
-          <ActionButton.Item buttonColor='#3498db' title="Upload" onPress={() => Actions.error()}>
+          <ActionButton.Item buttonColor='#3498db' title="Upload" onPress={() => Actions.animated()}>
             <Icon name="android-upload" style={styles.actionButtonIcon} />
           </ActionButton.Item>
           
@@ -441,7 +468,8 @@ updateLoadingState: function(isLoading: boolean){
             <Icon name="folder" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
-      </View>
+        
+      </ViewContainer>
     );
   },
 });

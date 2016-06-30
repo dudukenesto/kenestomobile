@@ -17,6 +17,13 @@ import RNFSApp from './app/screens/test-fs'
  import Login2 from'./app/screens/login2'
 
  import Error from './app/components/Error'
+
+ import animated from './app/components/animated'; 
+ 
+ import PanResponderExample from './app/components/PanResponderExample'; 
+
+  import AnimationTest from './app/components/AnimationTest'; 
+
 // import Home from './components/Home'
 // import EchoView from './components/EchoView'
 // import NavigationDrawer from './components/NavigationDrawer'
@@ -93,7 +100,8 @@ export default class KenestoRouter extends React.Component {
         return <Router createReducer={reducerCreate}>
             <Scene key="modal" component={Modal} >
                 <Scene key="root" hideNavBar={true}>
-                <Scene key="launch" component={KenestoLauncher} title="Launch"   initial={true} />
+                <Scene key="launch" component={KenestoLauncher} title="Launch"  initial={true} />
+               
                 <Scene key="imagePicker" component={ImagePickerExample}  hideTabBar={true} icon={TabIcon}  />
                 <Scene key="testfs" component={RNFSApp}  hideTabBar={true} icon={TabIcon}  />
                 <Scene key="register" component={RegisterScreen} title="Register"/>
@@ -126,6 +134,10 @@ export default class KenestoRouter extends React.Component {
                
                    
                 </Scene>
+                 <Scene key="animated" component={animated} title="animated"   />
+                  <Scene key="PanResponderExample" component={PanResponderExample} title="PanResponderExample" />
+                  <Scene key="AnimationTest" component={AnimationTest} title="AnimationTest"    />
+                  
                  <Scene key="createFolder" component={CreateFolder}/>
                 <Scene key="error" component={Error}/>
             </Scene>

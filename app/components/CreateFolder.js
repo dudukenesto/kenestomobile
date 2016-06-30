@@ -20,9 +20,20 @@ var styles = StyleSheet.create({
         alignItems: "center",
     },
     displayIcon: {
-        fontSize: 40,
-        height: 40,
+        fontSize: 30,
+        height: 30,
         color: 'blue',
+  },
+   content:{
+        flexDirection:'row',
+    },
+    textEdit: {
+        height: 40, 
+        width: 100,
+        borderColor: 'grey', 
+        backgroundColor: 'white',
+ 
+        borderWidth: 1
   },
 });
 
@@ -97,7 +108,7 @@ export default class extends React.Component {
            
            // this.props.afterCreateCallback({ Id: })
        
-           this.props.afterCreateCallback();
+           this.props.afterCreateCallback('success', 'folder successfully added');
          }).done();
 
 
@@ -113,17 +124,21 @@ export default class extends React.Component {
                                 alignItems: "center",
                                 backgroundColor:"white" }}>
                     <Text>Create new folder</Text>
-                    <View style={{flex: 1}}>
+                    <View style={styles.content}>
                          <Icon name="folder" style={styles.displayIcon} />
                           <TextInput
                             ref="folderName"
                             value={this.state.folderName} 
                             onChangeText={folderName => this.setState({folderName})}
-                        
+                            style={styles.textEdit}
+                            placeholder="Folder Name"
+                           
                             />
                     </View>
-                     <Button onPress={this.create.bind(this)}>Create</Button>
-                    <Button onPress={this.closeModal.bind(this)}>Close</Button>
+                    <View style={styles.content}>
+                        <Button onPress={this.create.bind(this)}>Create</Button>
+                        <Button onPress={this.closeModal.bind(this)}>Close</Button>
+                    </View>
                 </View>
             </Animated.View>
         );
