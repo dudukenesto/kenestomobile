@@ -109,21 +109,7 @@ var DocumentsScreen = React.createClass({
     this.searchDocuments('');
   },
 
-//   _urlForQueryAndPage: function(query: string, pageNumber: number): string {
-//     var apiKey = API_KEYS[this.state.queryNumber % API_KEYS.length];
-//     if (query) {
-//       return (
-//         API_URL + 'movies.json?apikey=' + apiKey + '&q=' +
-//         encodeURIComponent(query) + '&page_limit=20&page=' + pageNumber
-//       );
-//     } else {
-//       // With no query, load latest movies
-//       return (
-//         API_URL + 'lists/movies/in_theaters.json?apikey=' + apiKey +
-//         '&page_limit=20&page=' + pageNumber
-//       );
-//     }
-//   },
+
 
 _urlForQueryAndPage: function(query: string, pageNumber: number) : string{
     return "http://localhost/kenest.webApi/something";
@@ -136,13 +122,7 @@ updateLoadingState: function(isLoading: boolean){
   searchDocuments: function(query: string) {
     this.timeoutID = null;
 
-//    this.setState({filter: query});
-    
-   
-    
-      // if (back){
-      //   folderId = this.state.foldersTrail.length > 0? this.state.foldersTrail[this.state.foldersTrail.length - 1]: null
-      //  }
+
      
      var fId = this.state.folderId == null? '00000000-0000-0000-0000-000000000000' :this.state.folderId;
 
@@ -311,21 +291,7 @@ updateLoadingState: function(isLoading: boolean){
     
   else
     Actions.documentView({sessionToken: this.props.sessionToken, viewerUrl: document.ViewerUrl});
-   // Actions.documentView();
-    // if (Platform.OS === 'ios') {
-    //   this.props.navigator.push({
-    //     title: document.Title,
-    //     component: DocumentScreen,
-    //     passProps: {document},
-    //   });
-    // } else {
-    //   dismissKeyboard();
-    //   this.props.navigator.push({
-    //     title: document.Title,
-    //     name: 'document',
-    //     document: document,
-    //   });
-    // }
+
   },
 
   onSearchChange: function(event: Object) {
@@ -370,7 +336,7 @@ updateLoadingState: function(isLoading: boolean){
     rowID: number | string,
     highlightRowFunc: (sectionID: ?number | string, rowID: ?number | string) => void,
   ) {
-    
+ 
 
     return (
       <DocumentCell

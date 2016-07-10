@@ -114,6 +114,7 @@ export default class extends React.Component {
             folderName: '',
             opacity: new Animated.Value(0),
             _panResponder: {},
+            _panOverlayResponder: {},
             _previousTop: 0,
            
           //  currentFolderId : props.folderId, 
@@ -124,6 +125,22 @@ export default class extends React.Component {
 _updateNativeStyles(){
         this.floatingMenu && this.floatingMenu.setNativeProps(this._menuStyles);
 }
+
+
+
+
+_handlePanResponderGrantOverlay(e: Object, gestureState: Object){
+   this.closeModal();
+}
+
+_handleStartShouldSetPanResponderOverlay(e: Object, gestureState: Object){
+    return false;
+}
+
+_handleMoveShouldSetPanResponderOverlay(e: Object, gestureState: Object){
+    return false;
+}
+
     
 
 _handleStartShouldSetPanResponder(e: Object, gestureState: Object){
@@ -155,9 +172,9 @@ var pop = false;
 var maxBottom =  Math.min(deviceHeight - 350, this._menuStyles.style.bottom - (gestureState.dy)/scalingFactor);
 if (maxBottom > 0)
     maxBottom = 0;
-if (maxBottom < -330)
+if (maxBottom < -350)
 {
-     maxBottom = -330;
+     maxBottom = -350;
         pop = true;
 }
    
@@ -179,7 +196,12 @@ _handlePanResponderEnd(e: Object, gestureState: Object){
 if (gestureState.dy > 150)
     this.closeModal();
 else
-    this.showModal();
+{
+   // this._menuStyles.style.bottom = 0;
+   // this._updateNativeStyles();
+     this.showModal();
+}
+   
 //closeModal
 }
 
@@ -192,6 +214,12 @@ componentWillMount(){
       onPanResponderMove: this._handlePanResponderMove.bind(this),
       onPanResponderRelease: this._handlePanResponderEnd.bind(this),
       onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
+    });
+
+    this._panOverlayResponder = PanResponder.create({
+          onStartShouldSetPanResponder: this._handleStartShouldSetPanResponderOverlay,
+      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponderOverlay,
+        onPanResponderGrant: this._handlePanResponderGrantOverlay.bind(this),
     });
 }
 
@@ -212,12 +240,28 @@ componentWillMount(){
 
 
 updateOffset(){
-   this.setState({offset:  Animated.Value(350)});
+   this.setState({offset:  new Animated.Value(350)});
+}
+
+updateZaba(){
+
+this._menuStyles.style.bottom = 0;
+      //  this.setState({offset:  new Animated.Value(0)});
+   // alert(this.state.offset._value)
+  //   this._menuStyles.style.bottom = 0;
+ this._updateNativeStyles();
 }
 
 showModal(){
 
 
+   // this._menuStyles.style.bottom = 0;
+   // this._updateNativeStyles();
+
+
+var newVal = new Animated.Value(350-this._menuStyles.style.bottom);
+
+ //   alert('baba' + this._menuStyles.style.bottom + ' ' + this.state.offset._value)
 
 
     Animated.parallel([         
@@ -226,15 +270,14 @@ showModal(){
         toValue: 0.5
     }),
     
-    Animated.timing(this.state.offset, {
+    Animated.timing(newVal, {
         duration: 150,
-        toValue: this._menuStyles.style.bottom
+        toValue: -0
     })
 
+    ]).start(this.updateZaba.bind(this));
 
-    
-    ]).start();
-}
+ }
 
 
 closeModal() {
@@ -248,8 +291,8 @@ closeModal() {
     Animated.timing(this.state.opacity, {
         duration: 300,
         toValue: 0
-    }).start(Actions.pop)
-
+    }).start(Actions.pop);
+//(Actions.pop
 
 
        // alert(this._menuStyles.style.height);
@@ -340,7 +383,9 @@ closeModal() {
                                             this.floatingMenu = floatingMenu;
                                         }}
            style={[styles.containerTop ,{backgroundColor:'rgb(52,52,52)', opacity: this.state.opacity}, 
-                            ]}>
+                            ]}
+                               {...this._panOverlayResponder.panHandlers} 
+                            >
                              
                                 <Animated.View style={[styles.view ,{backgroundColor: 'rgba(0,0,0,1.0)' }, 
                                                             {transform: [{translateY: this.state.offset}]}]}
