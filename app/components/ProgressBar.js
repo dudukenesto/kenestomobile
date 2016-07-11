@@ -1,4 +1,5 @@
-import React, {View, StyleSheet, Platform, ProgressBarAndroid, ActivityIndicatorIOS} from "react-native";
+import React from "react";
+import {View, StyleSheet, Platform, ProgressBarAndroid, ActivityIndicatorIOS} from "react-native";
 
 var styles = StyleSheet.create({
   searchBar: {

@@ -1,10 +1,10 @@
 'use strict'
-import React, { Component, Navigator, Text } from 'react-native'
+import React, { Navigator, Text } from 'react-native'
 import LoginScreen from '../screens/LoginScreen'
 import DocumentScreen from '../screens/DocumentScreen'
 import DocumentsScreen from '../screens/DocumentsScreen'
 
-class AppNavigator extends Component {
+class AppNavigator extends React.Component {
 
   _renderScene(route, navigator) {
     var globalNavigatorProps = { navigator }

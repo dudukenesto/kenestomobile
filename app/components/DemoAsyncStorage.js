@@ -1,6 +1,6 @@
- import React, { Component, View, Text, AppRegistry, StyleSheet, AsyncStorage, TextInput }  from 'react-native';
+ import React, { View, Text, AppRegistry, StyleSheet, AsyncStorage, TextInput }  from 'react-native';
 
-class DemoAsyncStorage extends Component {
+class DemoAsyncStorage extends React.Component {
 
 componentDidMount(){
     AsyncStorage.getItem("myKey").then((value) => {

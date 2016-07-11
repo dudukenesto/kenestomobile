@@ -1,4 +1,5 @@
-import React, {View, Text, StyleSheet,Image,Platform, TouchableHighlight, TouchableNativeFeedback} from "react-native";
+import React from "react";
+import {View, Text, StyleSheet,Image,Platform, TouchableHighlight, TouchableNativeFeedback} from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 

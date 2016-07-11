@@ -1,4 +1,5 @@
-import React from 'react-native';
+import React from 'react';
+import ReactNative from 'react-native';
 import Button from "react-native-button";
 import config from '../utils/app.config';
 var FileUpload = require('NativeModules').FileUpload;
@@ -17,7 +18,7 @@ const {
     ImagePickerManager
   }, 
   CameraRoll
-} = React;
+} = ReactNative;
 
 export default class App extends React.Component {
 

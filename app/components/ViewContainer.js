@@ -1,11 +1,11 @@
 'use strict'
-import React, { Component, View } from 'react-native'
+import React, { View } from 'react-native'
 
 
 var MessageBarAlert = require('react-native-message-bar').MessageBar;
 var MessageBarManager = require('react-native-message-bar').MessageBarManager;
 
-class ViewContainer extends Component {
+class ViewContainer extends React.Component {
 
   componentDidMount(){
 MessageBarManager.registerMessageBar(this.refs.alert);

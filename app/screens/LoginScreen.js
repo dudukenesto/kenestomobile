@@ -1,4 +1,5 @@
-import React, {View, Text, TextInput, StyleSheet, TouchableHighlight, AsyncStorage, } from "react-native";
+import React from "react";
+import {View, Text, TextInput, StyleSheet, TouchableHighlight, AsyncStorage, } from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import config from '../utils/app.config';

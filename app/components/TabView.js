@@ -1,6 +1,6 @@
 
-
-import React, {View, Text, StyleSheet, AsyncStorage,ListView }
+import React from "react";
+import {View, Text, StyleSheet, AsyncStorage,ListView }
         from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";

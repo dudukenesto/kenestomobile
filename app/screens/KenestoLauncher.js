@@ -1,4 +1,5 @@
-import React, {View, Text, TextInput, StyleSheet, AsyncStorage, TouchableHighlight, PixelRatio} from "react-native";
+import React from "react";
+import {View, Text, TextInput, StyleSheet, AsyncStorage, TouchableHighlight, PixelRatio} from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import NavigationDrawer from '../components/NavigationDrawer'

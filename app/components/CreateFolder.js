@@ -1,4 +1,5 @@
-import React, {View, Text,TextInput, StyleSheet, Animated, Dimensions} from "react-native";
+import React from "react"; 
+import {View, Text,TextInput, StyleSheet, Animated, Dimensions} from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import Icon from 'react-native-vector-icons/Ionicons';

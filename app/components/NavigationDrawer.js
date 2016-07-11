@@ -1,9 +1,9 @@
-import React, {Component} from "react-native"
+import React from "react"
 import TabView from "./TabView"
 import Drawer from "react-native-drawer"
 import {DefaultRenderer} from "react-native-router-flux";
 
-export default class extends Component {
+export default class extends React.Component {
     render(){
         const children = this.props.navigationState.children;
         return (
