@@ -9,7 +9,7 @@ export default class extends React.Component {
         return (
             <Drawer
                 ref="navigation"
-                type="displace"
+                type="overlay"
                 content={<TabView loggedUser = {this.props.loggedUser}/>}
                 tapToClose={true}
                 openDrawerOffset={0.2}

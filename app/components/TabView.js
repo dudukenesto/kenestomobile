@@ -9,10 +9,17 @@ import LeftMenuItem from './LeftMenuItem';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        height: 100,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F5FCFF",
+        backgroundColor: "#F5F6F8", 
+        borderBottomWidth: 2,
+        borderBottomColor: '#EbEbEb',
+        marginBottom: 10
+    },
+    screenContainer: {
+        flex: 1,
+        backgroundColor: "#fff"
     },
     welcome: {
         fontSize: 20,
@@ -25,9 +32,9 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
      rowSeparator: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    height: 1,
-    marginLeft: 4,
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        height: 1,
+        marginLeft: 4,
   },
   rowSeparatorHide: {
     opacity: 0.0,
@@ -65,37 +72,50 @@ class TabView extends React.Component {
                 Id: 'recentDocs',
                 itemTitle : 'Recent Documents', 
                 itemCount : 60, 
-                itemIcon: '../assets/images/folder_icon.png'
+                itemIcon: '../assets/images/folder_icon.png',
+                selected: true
             },
             {
                 Id: 'myDocs',
                 itemTitle : 'My Documents', 
                 itemCount : 140, 
-                itemIcon: '../assets/images/folder_icon.png'
+                itemIcon: '../assets/images/folder_icon.png',
+                selected: false
             },
             {
                 Id: 'allDocs',
                 itemTitle : 'All Documents', 
                 itemCount : 60, 
-                itemIcon: '../assets/images/folder_icon.png'
+                itemIcon: '../assets/images/folder_icon.png',
+                selected: false
             },
             {
                 Id: 'chckDocs',
                 itemTitle : 'Checked-out Documents', 
                 itemCount : 60, 
-                itemIcon: '../assets/images/folder_icon.png'
+                itemIcon: '../assets/images/folder_icon.png',
+                selected: false
+            },
+             {
+                Id: 'archivedDocs',
+                itemTitle : 'Archived Documents', 
+                itemCount : 60, 
+                itemIcon: '../assets/images/folder_icon.png',
+                selected: false
             },
             {
                 Id: 'spaceUsage',
                 itemTitle : 'My usage space', 
                 itemCount : null, 
-                itemIcon: '../assets/images/folder_icon.png'
+                itemIcon: '../assets/images/folder_icon.png',
+                selected: false
             },
             {
                 Id: 'logout',
                 itemTitle : 'Logout', 
                 itemCount : null, 
-                itemIcon: '../assets/images/folder_icon.png'
+                itemIcon: '../assets/images/folder_icon.png',
+                selected: false
             }
         ]; 
 
@@ -109,7 +129,7 @@ class TabView extends React.Component {
         const drawer = this.context.drawer;
          
         return (
-            <View>
+            <View style={styles.screenContainer}>
                 <View style={[styles.container, this.props.sceneStyle]}>
                     <Text>Logged in as</Text>
                     <Text>{this.props.loggedUser}</Text>
@@ -137,6 +157,7 @@ class TabView extends React.Component {
 
 
     SelectItem(menuitem : Object){
+        menuitem.selected = true;
         alert(menuitem.Id)
     }
 
