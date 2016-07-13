@@ -1,6 +1,6 @@
 'use strict';
 
-const React = require('react-native');
+const React = require('react');
 const {
   ScrollView,
   StyleSheet,
