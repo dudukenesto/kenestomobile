@@ -4,7 +4,6 @@ import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import config from '../utils/app.config';
 import ProggressBar from "../components/ProgressBar";
-import ForgotPasword from "../components/ForgotPasword";
 
 
 var stricturiEncode = require('strict-uri-encode');
