@@ -4,7 +4,6 @@ import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import config from '../utils/app.config';
 import ProggressBar from "../components/ProgressBar";
-import ForgotPasword from "../components/ForgotPasword";
 
 
 var stricturiEncode = require('strict-uri-encode');
@@ -34,8 +33,7 @@ const styles = StyleSheet.create({
 
 
  class Login  extends React.Component { 
-     
-
+  
       constructor(props) {
          
             super(props)
@@ -53,6 +51,7 @@ const styles = StyleSheet.create({
       
       
  _ClearCredentials(){
+       console.log("Login")
         AsyncStorage.multiRemove(["kenestoU","kenestoP", "env"]); 
     }
    
