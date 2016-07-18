@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
       
       
  _ClearCredentials(){
-        console.log("Login10")
+        console.log("Login11")
         AsyncStorage.multiRemove(["kenestoU","kenestoP", "env"]); 
     }
    
