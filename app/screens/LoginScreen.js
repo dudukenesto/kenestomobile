@@ -33,8 +33,7 @@ const styles = StyleSheet.create({
 
 
  class Login  extends React.Component { 
-     
-
+  
       constructor(props) {
          
             super(props)
@@ -52,6 +51,7 @@ const styles = StyleSheet.create({
       
       
  _ClearCredentials(){
+       console.log("Login")
         AsyncStorage.multiRemove(["kenestoU","kenestoP", "env"]); 
     }
    
