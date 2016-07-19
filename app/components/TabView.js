@@ -1,6 +1,6 @@
 
 import React from "react";
-import {View, Text, StyleSheet, AsyncStorage,ListView }
+import {View, Text, StyleSheet, AsyncStorage,ListView,Image }
         from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
@@ -8,18 +8,30 @@ import LeftMenuItem from './LeftMenuItem';
  
 
 const styles = StyleSheet.create({
-    container: {
+    screenContainer: {
+        flex: 1,
+        backgroundColor: "#fff"
+    },
+    headerContainer: {
         height: 100,
-        justifyContent: "center",
+        flexDirection: 'row',
+        justifyContent: "flex-start",
         alignItems: "center",
-        backgroundColor: "#F5F6F8", 
+        backgroundColor: "#F5F6F8",
         borderBottomWidth: 2,
         borderBottomColor: '#EbEbEb',
         marginBottom: 10
     },
-    screenContainer: {
-        flex: 1,
-        backgroundColor: "#fff"
+    avatarContainer: {
+        margin: 5
+    },
+    avatar: {
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+  },
+    userInfoContainer: {
+        flex: 1
     },
     welcome: {
         fontSize: 20,
@@ -32,15 +44,17 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
      rowSeparator: {
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: 'rgba(0, 0, 0, 0)',
         height: 1,
         marginLeft: 4,
   },
-  rowSeparatorHide: {
-    opacity: 0.0,
+  rowSeparatorSelected: {
+        opacity: 1,
   },
+  rowSeparatorHide: {
+        opacity: 0
+  }
 });
-
 
 
 
@@ -133,14 +147,22 @@ class TabView extends React.Component {
        
     }
 
+    
     render(){
         const drawer = this.context.drawer;
+        var  imageSource = require('../assets/images/folder_icon.png');
+         
         return (
             <View style={styles.screenContainer}>
-                <View style={[styles.container, this.props.sceneStyle]}>
-                    <Text>Logged in as</Text>
-                    <Text>{this.props.loggedUser}</Text>
-                    <Button onPress={() => {drawer.close();this._ClearCredentials(); Actions.launch();}}>Log off</Button>
+                <View style={[styles.headerContainer, this.props.sceneStyle]}>
+                    <View style={styles.avatarContainer}>
+                        <Image source = {imageSource} style={styles.avatar} />
+                    </View>
+                    <View  style={styles.userInfoContainer}>
+                        <Text style={{color: '#000'}}>Username</Text>
+                        <Text>{this.props.loggedUser}</Text>
+                    </View>
+                                        
                 </View>
                 <View>
                     <ListView 
@@ -163,13 +185,14 @@ class TabView extends React.Component {
     }
 
 
+
     SelectItem(menuitem : Object){
 
         this.loadMenu(menuitem.Index);
        
     }
 
-    renderSeparator( sectionID: number | string,
+      renderSeparator( sectionID: number | string,
     rowID: number | string,
     adjacentRowHighlighted: boolean){
         var style = styles.rowSeparator;
@@ -180,6 +203,7 @@ class TabView extends React.Component {
         <View key={'SEP_' + sectionID + '_' + rowID}  style={style}/>
         );
     }
+
 
     renderRow(listItem: Object,
         sectionID: number | string,
