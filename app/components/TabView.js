@@ -1,6 +1,5 @@
-
 import React from "react";
-import {View, Text, StyleSheet, AsyncStorage, ListView, Image }
+import {View, Text, StyleSheet, AsyncStorage,ListView }
         from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
@@ -8,30 +7,18 @@ import LeftMenuItem from './LeftMenuItem';
  
 
 const styles = StyleSheet.create({
-    screenContainer: {
-        flex: 1,
-        backgroundColor: "#fff"
-    },
-    headerContainer: {
+    container: {
         height: 100,
-        flexDirection: 'row',
-        justifyContent: "flex-start",
+        justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F5F6F8",
+        backgroundColor: "#F5F6F8", 
         borderBottomWidth: 2,
         borderBottomColor: '#EbEbEb',
         marginBottom: 10
     },
-    avatarContainer: {
-        margin: 5
-    },
-    avatar: {
-        height: 50,
-        width: 50,
-        borderRadius: 25,
-  },
-    userInfoContainer: {
-        flex: 1
+    screenContainer: {
+        flex: 1,
+        backgroundColor: "#fff"
     },
     welcome: {
         fontSize: 20,
@@ -44,16 +31,13 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
      rowSeparator: {
-        backgroundColor: 'rgba(0, 0, 0, 0)',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
         height: 1,
         marginLeft: 4,
   },
-  rowSeparatorSelected: {
-        opacity: 1,
-  },
   rowSeparatorHide: {
-        opacity: 0
-  }
+    opacity: 0.0,
+  },
 });
 
 
@@ -65,9 +49,9 @@ class TabView extends React.Component {
         super (props);
         this.state = {
                 dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2,
-        }), 
-        }
+                rowHasChanged: (row1, row2) => row1 !== row2,}), 
+                selectedItem: 0        
+            }
     }
 
     componentWillMount(){
@@ -81,80 +65,81 @@ class TabView extends React.Component {
         return this.state.dataSource.cloneWithRows(menuItems);
     }
 
-    loadMenu(){
+    loadMenu(selectedIndex = 0){
         var menuItems = [
             {
-                Id: 'recentDocs',
+                Index: 0,
                 itemTitle : 'Recent Documents', 
                 itemCount : 60, 
-                itemIcon: '../assets/images/folder_icon.png',
+                itemIcon: 'folder_icon',
+                iconSeleted : 'rotten_tomatoes_icon',
                 selected: true
             },
             {
-                Id: 'myDocs',
+                Index: 1,
                 itemTitle : 'My Documents', 
                 itemCount : 140, 
-                itemIcon: '../assets/images/folder_icon.png',
+                itemIcon: 'folder_icon',
+                iconSeleted : 'rotten_tomatoes_icon',
                 selected: false
             },
             {
-                Id: 'allDocs',
+                Index: 2,
                 itemTitle : 'All Documents', 
                 itemCount : 60, 
-                itemIcon: '../assets/images/folder_icon.png',
+                itemIcon: 'folder_icon',
+                iconSeleted : 'rotten_tomatoes_icon',
                 selected: false
             },
             {
-                Id: 'chckDocs',
+                Index: 3,
                 itemTitle : 'Checked-out Documents', 
-                itemCount : 42, 
-                itemIcon: '../assets/images/folder_icon.png',
+                iconSeleted : 'rotten_tomatoes_icon',
+                itemCount : 60, 
+                itemIcon: 'folder_icon',
                 selected: false
             },
              {
-                Id: 'archivedDocs',
+                Index: 4,
                 itemTitle : 'Archived Documents', 
-                itemCount : 18, 
-                itemIcon: '../assets/images/folder_icon.png',
+                itemCount : 60, 
+                itemIcon: 'folder_icon',
+                iconSeleted : 'rotten_tomatoes_icon',
                 selected: false
             },
             {
-                Id: 'spaceUsage',
+                Index: 5,
                 itemTitle : 'My usage space', 
                 itemCount : null, 
-                itemIcon: '../assets/images/folder_icon.png',
+                itemIcon: 'folder_icon',
+                iconSeleted : 'rotten_tomatoes_icon',
                 selected: false
             },
             {
-                Id: 'logout',
+                Index: 6,
                 itemTitle : 'Logout', 
                 itemCount : null, 
-                itemIcon: '../assets/images/folder_icon.png',
+                itemIcon: 'folder_icon',
+                iconSeleted : 'rotten_tomatoes_icon',
                 selected: false
             }
         ]; 
 
  this.setState({
-          dataSource:  this.getDataSource(menuItems)
+          dataSource:  this.getDataSource(menuItems), 
+          selectedItem : selectedIndex 
         });
        
     }
 
     render(){
         const drawer = this.context.drawer;
-        var  imageSource = require('../assets/images/folder_icon.png');
-         
         return (
             <View style={styles.screenContainer}>
-                <View style={[styles.headerContainer, this.props.sceneStyle]}>
-                    <View style={styles.avatarContainer}>
-                        <Image source = {imageSource} style={styles.avatar} />
-                    </View>
-                    <View  style={styles.userInfoContainer}>
-                        <Text style={{color: '#000'}}>Username</Text>
-                        <Text>{this.props.loggedUser}</Text>
-                    </View>
-                                        
+                <View style={[styles.container, this.props.sceneStyle]}>
+                    <Text>Logged in as</Text>
+                    <Text>{this.props.loggedUser}</Text>
+                    <Button onPress={() => {drawer.close();this._ClearCredentials(); Actions.launch();}}>Log off</Button>
                 </View>
                 <View>
                     <ListView 
@@ -178,8 +163,9 @@ class TabView extends React.Component {
 
 
     SelectItem(menuitem : Object){
-        menuitem.selected = true;
-        alert(menuitem.Id)
+
+        this.loadMenu(menuitem.Index);
+       
     }
 
     renderSeparator( sectionID: number | string,
@@ -198,14 +184,15 @@ class TabView extends React.Component {
         sectionID: number | string,
         rowID: number | string,
         highlightRowFunc: (sectionID: ?number | string, rowID: ?number | string) => void){
-     
+ 
     return (
         <LeftMenuItem
-                key={listItem.Id}
+                key={listItem.Index}
                 onSelect={() => this.SelectItem(listItem)}
                 onHighlight={() => highlightRowFunc(sectionID, rowID)}
                 onUnhighlight={() => highlightRowFunc(null, null)}
                 listItem={listItem}
+                IsSelected = {listItem.Index == this.state.selectedItem}
             />
     );
      
@@ -220,7 +207,3 @@ class TabView extends React.Component {
 
 
 module.exports = TabView;
-
-// TabView.contextTypes = {
-//     drawer: React.PropTypes.object
-// };

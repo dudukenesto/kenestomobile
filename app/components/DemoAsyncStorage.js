@@ -1,4 +1,5 @@
- import React, { View, Text, AppRegistry, StyleSheet, AsyncStorage, TextInput }  from 'react-native';
+ import React from 'react';
+ import{ View, Text, AppRegistry, StyleSheet, AsyncStorage, TextInput }  from 'react-native';
 
 class DemoAsyncStorage extends React.Component {
 
