@@ -5,6 +5,7 @@ import {Actions} from "react-native-router-flux";
 import config from '../utils/app.config';
 import ProggressBar from "../components/ProgressBar";
 
+
 var stricturiEncode = require('strict-uri-encode');
 
 const styles = StyleSheet.create({
@@ -32,8 +33,7 @@ const styles = StyleSheet.create({
 
 
  class Login  extends React.Component { 
-     
-
+  
       constructor(props) {
          
             super(props)
@@ -42,8 +42,11 @@ const styles = StyleSheet.create({
             username: "",
             password: "",
             env: props.env, 
-            isLoading: false
+            isLoading: false, 
+            mode: "login"
          }
+
+
       }
       
       
@@ -52,7 +55,8 @@ const styles = StyleSheet.create({
     }
    
     _makeLogin(){
-       
+
+
         this.setState({isLoading: true});
          var { username, password, env } = this.state; 
          
@@ -149,7 +153,9 @@ const styles = StyleSheet.create({
 
     
     render(){
+
       
+      if (this.state.mode == "login")
         return (
             <View style={[styles.container, this.props.style]}>
           {this.renderProgressBar()}
@@ -171,7 +177,7 @@ const styles = StyleSheet.create({
 
               
             </View>
-        );
+        ); 
     }
 }
 

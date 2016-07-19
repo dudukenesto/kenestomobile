@@ -1,4 +1,5 @@
-import React, {AppRegistry, Navigator, StyleSheet, Text, View} from 'react-native'
+import React from 'react';
+import {AppRegistry, Navigator, StyleSheet, Text, View} from 'react-native'
 import {Scene, Reducer, Router, Switch, TabBar, Modal, Schema, Actions} from 'react-native-router-flux'
 import KenestoLauncher from './app/screens/KenestoLauncher'
 import RegisterScreen from './app/screens/RegisterScreen'
