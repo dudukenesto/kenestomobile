@@ -1,6 +1,6 @@
-import React from "react"
-import TabView from "./TabView"
-import Drawer from "react-native-drawer"
+import React from "react";
+import TabView from "./TabView";
+import Drawer from "react-native-drawer";
 import {DefaultRenderer} from "react-native-router-flux";
 
 export default class extends React.Component {
@@ -17,7 +17,7 @@ export default class extends React.Component {
                 negotiatePan={true}
                 tweenHandler={(ratio) => ({
                  main: { opacity:Math.max(0.54,1-ratio) }
-            })}>
+                })}>
                 <DefaultRenderer navigationState={children[0]} />
             </Drawer>
         );
