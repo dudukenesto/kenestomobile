@@ -53,6 +53,7 @@ export default class LeftMenuItem extends React.Component {
 
      constructor(props){
          if (typeof props == 'undefined')
+           
             props = null;
             
         super(props);
