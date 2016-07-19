@@ -77,6 +77,18 @@ export default class extends React.Component {
     
 
      switch (env) {
+            case 'devDudu':
+                  AuthUrlTemplate = config.devDudu.AuthUrlTemplate; 
+                  LoginUrlTemplate = config.devDudu.LoginUrlTemplate; 
+                 break;
+            case 'devAdam':
+                  AuthUrlTemplate = config.devAdam.AuthUrlTemplate; 
+                  LoginUrlTemplate = config.devAdam.LoginUrlTemplate; 
+                 break;
+            case 'devKonstya':
+                  AuthUrlTemplate = config.devKonstya.AuthUrlTemplate; 
+                  LoginUrlTemplate = config.devKonstya.LoginUrlTemplate; 
+                 break;
              case 'qa':
                   ApiBaseUrl = config.qa.ApiBaseUrl; 
                  break;
