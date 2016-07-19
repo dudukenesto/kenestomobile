@@ -1,6 +1,10 @@
 
 import React from "react";
+<<<<<<< HEAD
 import {View, Text, StyleSheet, AsyncStorage,ListView,Image }
+=======
+import {View, Text, StyleSheet, AsyncStorage, ListView, Image }
+>>>>>>> origin/master
         from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
@@ -64,9 +68,9 @@ class TabView extends React.Component {
         super (props);
         this.state = {
                 dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2,}), 
-                selectedItem: 0        
-            }
+                rowHasChanged: (row1, row2) => row1 !== row2,
+        }), 
+        }
     }
 
     componentWillMount(){
@@ -80,69 +84,61 @@ class TabView extends React.Component {
         return this.state.dataSource.cloneWithRows(menuItems);
     }
 
-    loadMenu(selectedIndex = 0){
+    loadMenu(){
         var menuItems = [
             {
-                Index: 0,
+                Id: 'recentDocs',
                 itemTitle : 'Recent Documents', 
                 itemCount : 60, 
-                itemIcon: 'folder_icon',
-                iconSeleted : 'rotten_tomatoes_icon',
+                itemIcon: '../assets/images/folder_icon.png',
                 selected: true
             },
             {
-                Index: 1,
+                Id: 'myDocs',
                 itemTitle : 'My Documents', 
                 itemCount : 140, 
-                itemIcon: 'folder_icon',
-                iconSeleted : 'rotten_tomatoes_icon',
+                itemIcon: '../assets/images/folder_icon.png',
                 selected: false
             },
             {
-                Index: 2,
+                Id: 'allDocs',
                 itemTitle : 'All Documents', 
                 itemCount : 60, 
-                itemIcon: 'folder_icon',
-                iconSeleted : 'rotten_tomatoes_icon',
+                itemIcon: '../assets/images/folder_icon.png',
                 selected: false
             },
             {
-                Index: 3,
+                Id: 'chckDocs',
                 itemTitle : 'Checked-out Documents', 
-                iconSeleted : 'rotten_tomatoes_icon',
-                itemCount : 60, 
-                itemIcon: 'folder_icon',
+                itemCount : 42, 
+                itemIcon: '../assets/images/folder_icon.png',
                 selected: false
             },
              {
-                Index: 4,
+                Id: 'archivedDocs',
                 itemTitle : 'Archived Documents', 
-                itemCount : 60, 
-                itemIcon: 'folder_icon',
-                iconSeleted : 'rotten_tomatoes_icon',
+                itemCount : 18, 
+                itemIcon: '../assets/images/folder_icon.png',
                 selected: false
             },
             {
-                Index: 5,
+                Id: 'spaceUsage',
                 itemTitle : 'My usage space', 
                 itemCount : null, 
-                itemIcon: 'folder_icon',
-                iconSeleted : 'rotten_tomatoes_icon',
+                itemIcon: '../assets/images/folder_icon.png',
                 selected: false
             },
             {
-                Index: 6,
+                Id: 'logout',
                 itemTitle : 'Logout', 
                 itemCount : null, 
-                itemIcon: 'folder_icon',
-                iconSeleted : 'rotten_tomatoes_icon',
+                itemIcon: '../assets/images/folder_icon.png',
                 selected: false
             }
         ]; 
 
  this.setState({
-          dataSource:  this.getDataSource(menuItems), 
-          selectedItem : selectedIndex 
+          dataSource:  this.getDataSource(menuItems)
         });
        
     }
@@ -188,13 +184,18 @@ class TabView extends React.Component {
 
     SelectItem(menuitem : Object){
 
-        this.loadMenu(menuitem.Index);
-       
+        console.log('222')
+
+
+        menuitem.selected = true;
+        alert(menuitem.Id)
+        console.log('555')
     }
 
       renderSeparator( sectionID: number | string,
     rowID: number | string,
     adjacentRowHighlighted: boolean){
+        console.log('555')
         var style = styles.rowSeparator;
         if (adjacentRowHighlighted) {
             style = [style, styles.rowSeparatorHide];
@@ -209,15 +210,14 @@ class TabView extends React.Component {
         sectionID: number | string,
         rowID: number | string,
         highlightRowFunc: (sectionID: ?number | string, rowID: ?number | string) => void){
- 
+     
     return (
         <LeftMenuItem
-                key={listItem.Index}
+                key={listItem.Id}
                 onSelect={() => this.SelectItem(listItem)}
                 onHighlight={() => highlightRowFunc(sectionID, rowID)}
                 onUnhighlight={() => highlightRowFunc(null, null)}
                 listItem={listItem}
-                IsSelected = {listItem.Index == this.state.selectedItem}
             />
     );
      
