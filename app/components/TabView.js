@@ -178,9 +178,10 @@ class TabView extends React.Component {
 
 
     SelectItem(menuitem : Object){
-        console.log('333')
+        
         menuitem.selected = true;
         alert(menuitem.Id)
+        console.log('444')
     }
 
     renderSeparator( sectionID: number | string,
