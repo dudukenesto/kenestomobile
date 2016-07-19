@@ -69,7 +69,7 @@ export default class extends React.Component {
 
     
 
-         var {env} = this.props.env;
+    var env = this.state.env; 
     //const {curEnv} = config.env;
     
      var {ApiBaseUrl} = config.dev 
@@ -78,25 +78,22 @@ export default class extends React.Component {
 
      switch (env) {
             case 'devDudu':
-                  AuthUrlTemplate = config.devDudu.AuthUrlTemplate; 
-                  LoginUrlTemplate = config.devDudu.LoginUrlTemplate; 
-                 break;
-            case 'devAdam':
-                  AuthUrlTemplate = config.devAdam.AuthUrlTemplate; 
-                  LoginUrlTemplate = config.devAdam.LoginUrlTemplate; 
-                 break;
-            case 'devKonstya':
-                  AuthUrlTemplate = config.devKonstya.AuthUrlTemplate; 
-                  LoginUrlTemplate = config.devKonstya.LoginUrlTemplate; 
-                 break;
-             case 'qa':
-                  ApiBaseUrl = config.qa.ApiBaseUrl; 
-                 break;
-            case 'staging':
-                  ApiBaseUrl = config.staging.ApiBaseUrl; 
+                    ApiBaseUrl = config.devDudu.ApiBaseUrl;  
+                    break;
+                case 'devAdam':
+                    ApiBaseUrl = config.devAdam.ApiBaseUrl; 
+                    break;
+                case 'devKonstya':
+                    ApiBaseUrl = config.devKonstya.ApiBaseUrl; 
                      break;
-            case 'production':
-                  ApiBaseUrl = config.production.ApiBaseUrl; 
+                case 'qa':
+                    ApiBaseUrl = config.qa.ApiBaseUrl; 
+                    break;
+                case 'staging':
+                    ApiBaseUrl = config.staging.ApiBaseUrl; 
+                        break;
+                case 'production':
+                    ApiBaseUrl = config.production.ApiBaseUrl; 
              default:
                  break;
          }

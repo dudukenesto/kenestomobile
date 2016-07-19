@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
                     ApiBaseUrl = config.staging.ApiBaseUrl; 
                         break;
                 case 'production':
-                    ApiBaseUrl = config.production.ApiBaseUrl; 
+                    ApiBaseUrl = config.production.ApiBaseUrl;  
                 default:
                     break;
             }
