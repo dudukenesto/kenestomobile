@@ -179,7 +179,8 @@ class TabView extends React.Component {
 
     SelectItem(menuitem : Object){
 
-        console.log('333')
+        console.log('222')
+
 
         menuitem.selected = true;
         alert(menuitem.Id)
