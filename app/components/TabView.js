@@ -187,6 +187,7 @@ class TabView extends React.Component {
     renderSeparator( sectionID: number | string,
     rowID: number | string,
     adjacentRowHighlighted: boolean){
+        console.log('555')
         var style = styles.rowSeparator;
         if (adjacentRowHighlighted) {
             style = [style, styles.rowSeparatorHide];
