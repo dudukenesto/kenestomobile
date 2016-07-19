@@ -6,7 +6,6 @@ import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import Icon from 'react-native-vector-icons/Ionicons';
 import config from '../utils/app.config';
-//zababa
 
 var {
   height: deviceHeight, width: deviceWidth
