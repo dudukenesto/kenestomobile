@@ -183,12 +183,18 @@ updateLoadingState: function(isLoading: boolean){
                     .catch((error) => {
                         //Actions.error({data: 'get documents faliled failed'})
                          Actions.error({data: 'Failed to get documents'})
+                           this.setState({ isLoading: false,
+  	                                        refreshing: false});
+                          return;
                     })
                     .then( (responseData) => {
 
                        if (responseData.ResponseStatus == 'FAILED')
                        {
                           Actions.error({data: 'Action failed'})
+                            this.setState({ isLoading: false,
+  	                        refreshing: false});
+                           return;
                        }
                        
                           LOADING[query] = false;
@@ -225,9 +231,11 @@ updateLoadingState: function(isLoading: boolean){
   },
 
   onEndReached: function() {
+  
     var query = this.state.filter;
     if (!this.hasMore() || this.state.isLoadingTail) {
       // We're already fetching or have all the elements so noop
+     
       return;
     }
 
@@ -243,6 +251,7 @@ updateLoadingState: function(isLoading: boolean){
 
     var page = resultsCache.nextPageNumberForQuery[query];
     invariant(page != null, 'Next page number for "%s" is missing', query);
+
     fetch(this._urlForQueryAndPage(query, page))
       .then((response) => response.json())
       .catch((error) => {
