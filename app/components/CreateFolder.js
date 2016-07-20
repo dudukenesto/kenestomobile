@@ -69,7 +69,7 @@ export default class extends React.Component {
 
     
 
-         var {env} = this.props.env;
+    var env = this.state.env; 
     //const {curEnv} = config.env;
     
      var {ApiBaseUrl} = config.dev 
@@ -77,14 +77,23 @@ export default class extends React.Component {
     
 
      switch (env) {
-             case 'qa':
-                  ApiBaseUrl = config.qa.ApiBaseUrl; 
-                 break;
-            case 'staging':
-                  ApiBaseUrl = config.staging.ApiBaseUrl; 
+            case 'devDudu':
+                    ApiBaseUrl = config.devDudu.ApiBaseUrl;  
+                    break;
+                case 'devAdam':
+                    ApiBaseUrl = config.devAdam.ApiBaseUrl; 
+                    break;
+                case 'devKonstya':
+                    ApiBaseUrl = config.devKonstya.ApiBaseUrl; 
                      break;
-            case 'production':
-                  ApiBaseUrl = config.production.ApiBaseUrl; 
+                case 'qa':
+                    ApiBaseUrl = config.qa.ApiBaseUrl; 
+                    break;
+                case 'staging':
+                    ApiBaseUrl = config.staging.ApiBaseUrl; 
+                        break;
+                case 'production':
+                    ApiBaseUrl = config.production.ApiBaseUrl; 
              default:
                  break;
          }

@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         paddingRight: 15
     },
-    selectedRow: {
-        backgroundColor: 'black'
+    selectedItem: {
+        fontWeight : '900'
     },
     itemIcon: {
         backgroundColor: 'transparent',
@@ -53,6 +53,7 @@ export default class LeftMenuItem extends React.Component {
 
      constructor(props){
          if (typeof props == 'undefined')
+           
             props = null;
             
         super(props);
@@ -65,10 +66,10 @@ export default class LeftMenuItem extends React.Component {
         if (Platform.OS === 'android') {
                 TouchableElement = TouchableNativeFeedback;
         }
+ 
 
-      
-         var  imageSource = require('../assets/images/folder_icon.png'); 
-      // var imageSource ={uri: this.props.icon}
+        var imageName = this.props.IsSelected ? this.props.listItem.iconSeleted :  this.props.listItem.itemIcon;
+        var itemStyle = this.props.IsSelected ? [styles.itemTitle,  styles.selectedItem] : styles.itemTitle; 
 
 
         return (
@@ -78,14 +79,14 @@ export default class LeftMenuItem extends React.Component {
                         onShowUnderlay={this.props.onHighlight}
                         onHideUnderlay={this.props.onUnhighlight}>
                         <View style={styles.row}>
-                            <Image                     
-                                source = {imageSource}
+                            <Image    
+                                source={{ uri: imageName, isStatic: true }}                 
                                 style={styles.itemIcon}
                             />
-                            <Text style={styles.itemTitle} >
+                            <Text style={itemStyle} >
                                 {this.props.listItem.itemTitle}
                             </Text>
-                            <Text style={[styles.itemTitle, styles.itemCount]}>
+                            <Text style={itemStyle}>
                                 {this.props.listItem.itemCount}
                             </Text>
                         </View>

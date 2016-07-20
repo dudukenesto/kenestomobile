@@ -106,7 +106,9 @@ class KenestoLauncher extends React.Component {
         let index = 0;
         const data = [
             { key: index++, section: true, label: 'Environments' },
-            { key: "dev", label: 'Local Dev' },
+            { key: "devDudu", label: 'Dudu Dev' },
+            { key: "devAdam", label: 'Adam Dev' },
+            { key: "devKonstya", label: 'Konstya Dev' },
             { key: "qa", label: 'QA' },
             { key: "staging", label: 'Staging' },
             { key: "production", label: 'Production' },
@@ -150,8 +152,19 @@ class KenestoLauncher extends React.Component {
      //    const {curEnv} = config.env;
          
          switch (env) {
+            case 'devDudu':
+                  AuthUrlTemplate = config.devDudu.AuthUrlTemplate; 
+                  LoginUrlTemplate = config.devDudu.LoginUrlTemplate; 
+                 break;
+            case 'devAdam':
+                  AuthUrlTemplate = config.devAdam.AuthUrlTemplate; 
+                  LoginUrlTemplate = config.devAdam.LoginUrlTemplate; 
+                 break;
+            case 'devKonstya':
+                  AuthUrlTemplate = config.devKonstya.AuthUrlTemplate; 
+                  LoginUrlTemplate = config.devKonstya.LoginUrlTemplate; 
+                 break;
              case 'qa':
-                
                   AuthUrlTemplate = config.qa.AuthUrlTemplate; 
                   LoginUrlTemplate = config.qa.LoginUrlTemplate; 
                  break;

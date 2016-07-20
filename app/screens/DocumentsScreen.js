@@ -148,22 +148,29 @@ updateLoadingState: function(isLoading: boolean){
       isLoadingTail: false,
     });
     const sessionToken  = encodeURIComponent(this.props.sessionToken)
-    var {env} = this.state;
+    var env = this.state.env; 
     //const {curEnv} = config.env;
     
      var {ApiBaseUrl} = config.dev 
      
-    
-
      switch (env) {
-             case 'qa':
-                  ApiBaseUrl = config.qa.ApiBaseUrl; 
-                 break;
-            case 'staging':
-                  ApiBaseUrl = config.staging.ApiBaseUrl; 
+           case 'devDudu':
+                    ApiBaseUrl = config.devDudu.ApiBaseUrl;  
+                    break;
+                case 'devAdam':
+                    ApiBaseUrl = config.devAdam.ApiBaseUrl; 
+                    break;
+                case 'devKonstya':
+                    ApiBaseUrl = config.devKonstya.ApiBaseUrl; 
                      break;
-            case 'production':
-                  ApiBaseUrl = config.production.ApiBaseUrl; 
+                case 'qa':
+                    ApiBaseUrl = config.qa.ApiBaseUrl; 
+                    break;
+                case 'staging':
+                    ApiBaseUrl = config.staging.ApiBaseUrl; 
+                        break;
+                case 'production':
+                    ApiBaseUrl = config.production.ApiBaseUrl; 
              default:
                  break;
          }
@@ -176,12 +183,18 @@ updateLoadingState: function(isLoading: boolean){
                     .catch((error) => {
                         //Actions.error({data: 'get documents faliled failed'})
                          Actions.error({data: 'Failed to get documents'})
+                           this.setState({ isLoading: false,
+  	                                        refreshing: false});
+                          return;
                     })
                     .then( (responseData) => {
 
                        if (responseData.ResponseStatus == 'FAILED')
                        {
                           Actions.error({data: 'Action failed'})
+                            this.setState({ isLoading: false,
+  	                        refreshing: false});
+                           return;
                        }
                        
                           LOADING[query] = false;
@@ -218,9 +231,11 @@ updateLoadingState: function(isLoading: boolean){
   },
 
   onEndReached: function() {
+  
     var query = this.state.filter;
     if (!this.hasMore() || this.state.isLoadingTail) {
       // We're already fetching or have all the elements so noop
+     
       return;
     }
 
@@ -236,6 +251,7 @@ updateLoadingState: function(isLoading: boolean){
 
     var page = resultsCache.nextPageNumberForQuery[query];
     invariant(page != null, 'Next page number for "%s" is missing', query);
+
     fetch(this._urlForQueryAndPage(query, page))
       .then((response) => response.json())
       .catch((error) => {
