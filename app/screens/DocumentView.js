@@ -26,7 +26,6 @@ import ViewTransformer from 'react-native-view-transformer';
 class DocumentView extends React.Component{
   constructor(props){
     super(props);
-    
     this.state = {  
       sessionToken : props.sessionToken,
       viewerUrl: props.viewerUrl,

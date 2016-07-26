@@ -6,7 +6,6 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "lodash": "^4.13.1",
     "react": "^0.14.8",
     "react-native": "0.25.1",
     "react-native-action-button": "^1.1.5",
@@ -27,6 +26,12 @@
     "react-native-view-transformer": "0.0.27",
     "react-native-webview-android": "^1.0.13",
     "strict-uri-encode": "^1.1.0",
-    "tcomb-form-native": "^0.5.3"
+    "tcomb-form-native": "^0.5.3",
+    "react-redux": "^3.1.0",
+    "redux": "^3.0.3",
+    "redux-logger": "^2.0.4",
+    "redux-thunk": "^1.0.0",
+    "moment": "^2.10.6",
+    "react-pure-render": "^1.0.2",
   }
 }

@@ -1,11 +1,7 @@
 
 import React from "react";
-<<<<<<< HEAD
 import {View, Text, StyleSheet, AsyncStorage,ListView,Image }
-=======
-import {View, Text, StyleSheet, AsyncStorage, ListView, Image }
->>>>>>> origin/master
-        from "react-native";
+from "react-native";
 import Button from "react-native-button";
 import {Actions} from "react-native-router-flux";
 import LeftMenuItem from './LeftMenuItem';
@@ -233,6 +229,6 @@ class TabView extends React.Component {
 
 module.exports = TabView;
 
-// TabView.contextTypes = {
-//     drawer: React.PropTypes.object
-// };
+ TabView.contextTypes = {
+     drawer: React.PropTypes.object
+};

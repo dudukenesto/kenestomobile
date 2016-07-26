@@ -3,7 +3,7 @@
 import { Navigator, Text } from 'react-native'
 import LoginScreen from '../screens/LoginScreen'
 import DocumentScreen from '../screens/DocumentScreen'
-import DocumentsScreen from '../screens/DocumentsScreen'
+import DocumentsScreen from '../containers/MainContainer'
 
 class AppNavigator extends React.Component {
 
