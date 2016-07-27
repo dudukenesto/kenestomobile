@@ -5,7 +5,7 @@ let {
 Alert
 } = React
 
-function fetchDocuments(url, tableName,actionType) {
+function fetchDocuments(url, tableName ,actionType) {
   return (dispatch, getState) => {
     dispatch(requestDocuments(tableName))
     return fetch(url)
@@ -37,28 +37,29 @@ function fetchDocuments(url, tableName,actionType) {
   }
 }
 
-export function fetchDocumentsIfNeeded(env, sessionToken, fId, tableName) {
+export function fetchDocumentsIfNeeded(env, sessionToken, tableName) {
   return (dispatch, getState) => {
     const {tableNames} = getState()
     if (shouldFetchDocuments(tableNames, tableName)) {
-      const nextUrl = getNextUrl(env, sessionToken, fId ,tableNames, tableName)
-      return dispatch(fetchDocuments(nextUrl, tableName,types.RECEIVE_DOCUMENTS))
+      const nextUrl = getNextUrl(env, sessionToken ,tableNames, tableName)
+      return dispatch(fetchDocuments(nextUrl, tableName, types.RECEIVE_DOCUMENTS))
     }
   }
 }
 
-export function refreshDocuments(env, sessionToken, fId, tableName) {
+
+export function refreshDocuments(env, sessionToken, tableName) {
     return (dispatch, getState) => {
       const url = constructRetrieveDocumentsUrl(env, sessionToken, fId)
       return dispatch(fetchDocuments(url, tableName, types.INITIALIZE_DOCUMENTS))
   }
 }
 
-function getNextUrl(env, sessionToken, fId, tableNames, tableName) {
+function getNextUrl(env, sessionToken, tableNames, tableName) {
   
-  const activePlaylist = tableNames[tableName]
+  const activePlaylist = tableNames[tableName.name]
   if (!activePlaylist || activePlaylist.nextUrl === false) {
-    return constructRetrieveDocumentsUrl(env, sessionToken, fId)
+    return constructRetrieveDocumentsUrl(env, sessionToken, tableName.fId)
   }
   console.log(activePlaylist.nextUrl)
   return activePlaylist.nextUrl
@@ -69,7 +70,7 @@ function receiveDocuments(documents, nextUrl, tableName) {
   return {
     type: types.RECEIVE_DOCUMENTS,
     nextUrl,
-    tableName,
+    name: tableName.name,
     documents
   }
 }
@@ -79,20 +80,21 @@ function initializeDocuments(documents, nextUrl, tableName) {
   return {
     type: types.INITIALIZE_DOCUMENTS,
     nextUrl,
-    tableName,
+     name: tableName.name,
     documents
   }
 }
 
 function requestDocuments(tableName) {
+   console.log(JSON.stringify(tableName))
   return {
     type: types.REQUEST_DOCUMENTS,
-    tableName: tableName
+    name: tableName.name
   }
 }
 
 function shouldFetchDocuments(tableNames, tableName) {
-  const activePlaylist = tableNames[tableName]
+  const activePlaylist = tableNames[tableName.name]
   if (!activePlaylist || !activePlaylist.isFetching && (activePlaylist.nextUrl !== null) && (activePlaylist.nextUrl !== "")) {
     return true
   }
@@ -100,9 +102,3 @@ function shouldFetchDocuments(tableNames, tableName) {
   return false
 }
 
-export function changePlaylist(tableName) {
-  return {
-    type: types.CHANGE_PLAYLIST,
-    tableName: tableName
-  }
-}

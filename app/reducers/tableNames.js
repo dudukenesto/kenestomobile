@@ -36,20 +36,20 @@ export default function tableNames(state = {}, action) {
   switch(action.type) {
   case types.RECEIVE_DOCUMENTS:
     return Object.assign({}, state, {
-      [action.tableName]: tableName(state[action.tableName], action)
+      [action.name]: tableName(state[action.name], action)
     })
 
   case types.REQUEST_DOCUMENTS:
+  console.log("REQUEST_DOCUMENTS"+JSON.stringify(action))
     return Object.assign({}, state, {
-      [action.tableName]: tableName(state[action.tableName], action)
+      [action.name]: tableName(state[action.name], action)
     })
   
   case types.INITIALIZE_DOCUMENTS:
     return Object.assign({}, state, {
-      [action.tableName]: tableName(state[action.tableName], action)
+      [action.name]: tableName(state[action.name], action),
     })
-
-
+  
   default:
     return state
   }

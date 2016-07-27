@@ -28,7 +28,7 @@ export function constructRetrieveDocumentsUrl(env, sessionToken, fId) {
              default:
                  break;
          }
-      if(fId == undefined)
+      if(fId == undefined || fId=="")
       {
         return  `${ApiBaseUrl}/KDocuments.svc/RetrieveDocuments?t=${encodeSessionToken}`
       }

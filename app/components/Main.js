@@ -19,7 +19,7 @@ class Main extends React.Component {
     return (
       <Documents
         {...this.props}
-        scrollFunc={fetchDocumentsIfNeeded.bind(null, env, sessionToken, fId, tableName)} />
+        scrollFunc={fetchDocumentsIfNeeded.bind(null, env, sessionToken, tableName)} />
     )
   }
 

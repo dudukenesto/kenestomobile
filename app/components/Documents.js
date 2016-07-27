@@ -27,6 +27,7 @@ var DocumentCell = require('../components/documentCell');
 
 import {Actions} from "react-native-router-flux";
 import {fetchDocumentsIfNeeded,refreshDocuments} from '../actions/tableNames'
+import {changeTableName} from '../actions/tableName'
 import ViewContainer from '../components/ViewContainer';
 import KenestoHelper from '../utils/KenestoHelper';
 import Button from "react-native-button";
@@ -37,13 +38,12 @@ import ActionButton from 'react-native-action-button';
 class Documents extends Component {
   constructor (props) {
     super(props)
-
     this.state = {
       isFetchingTail: false
     }
 
     this.onEndReached = this.onEndReached.bind(this)
-    this.selectDocument = this.selectDocument.bind(this)
+    this.selectItem = this.selectItem.bind(this)
      this._onRefresh = this._onRefresh.bind(this)
   }
 
@@ -55,15 +55,16 @@ class Documents extends Component {
   }
 
   componentWillMount() {
-    const {dispatch, env, sessionToken, fId, tableName} = this.props
-    dispatch(fetchDocumentsIfNeeded(env, sessionToken, fId, tableName))
+    const {dispatch, env, sessionToken, tableName} = this.props
+    dispatch(fetchDocumentsIfNeeded(env, sessionToken, tableName))
   }
 
    componentWillReceiveProps(nextProps) {
-    const {dispatch, env, sessionToken, fId, tableName} = this.props
-    if (tableName !== nextProps.tableName) {
-      if (!(nextProps.tableName in tableNames) || tableNames[nextProps.tableName].items.length === 0) {
-       dispatch(fetchDocumentsIfNeeded(env, sessionToken, fId, tableName))
+    const {dispatch, env, sessionToken, tableName, tableNames} = this.props
+
+    if (tableName.name !== nextProps.tableName.name) {
+      if (!(nextProps.tableName.name in tableNames) || tableNames[nextProps.tableName.name].items.length === 0) {
+        dispatch(fetchDocumentsIfNeeded(env, sessionToken, nextProps.tableName))
       }
     }
   }
@@ -73,14 +74,14 @@ class Documents extends Component {
   }
 
 
-  selectDocument(document) {
+  selectItem(document) {
     if (document.FamilyCode == 'FOLDER')
     {
-      var folderT = new Object(); 
-      folderT.Id = document.Id;
-      folderT.Name = document.Name;
-      this.state.foldersTrail.push(folderT);
-      this.setState({ folderId : document.Id});
+      const {dispatch, env, sessionToken, tableName} = this.props
+
+      var newName =  tableName.name + "_" + document.Id
+      parentfid = "";
+      dispatch(changeTableName(newName, document.Id, parentfid ))
     }
     else
     {
@@ -149,7 +150,7 @@ _renderTableContent(dataSource, isFetching){
                   renderRow={(document,sectionID,rowID, highlightRowFunc) => {
                               return (<DocumentCell
                                         key={document.Id}
-                                        onSelect={this.selectDocument.bind(this, document)}
+                                        onSelect={this.selectItem.bind(this, document)}
                                         //onHighlight={this.highlightRowFunc(sectionID, rowID)}
                                         //onUnhighlight={this.highlightRowFunc(null, null)}
                                         document={document}/>
@@ -166,12 +167,11 @@ _renderTableContent(dataSource, isFetching){
 
 
   render () {
-    const {dispatch, tableName, tableNames} = this.props
+    const {dispatch, tableNames,tableName } = this.props
    
-    const isFetching =tableName in tableNames ? tableNames[tableName].isFetching : false
-console.log("render:"+isFetching)
+    const isFetching =tableName.name in tableNames ? tableNames[tableName.name].isFetching : false
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-    let dataSource = tableName in tableNames ? ds.cloneWithRows(tableNames[tableName].items) : ds.cloneWithRows([])
+    let dataSource = tableName.name in tableNames ? ds.cloneWithRows(tableNames[tableName.name].items) : ds.cloneWithRows([])
 
     var breadCrums = this.state.folderId != null ?    <View style={{flexDirection:"row"}}>
     <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>     ...  </Button>
