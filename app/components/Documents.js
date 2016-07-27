@@ -45,6 +45,7 @@ class Documents extends Component {
     this.onEndReached = this.onEndReached.bind(this)
     this.selectItem = this.selectItem.bind(this)
      this._onRefresh = this._onRefresh.bind(this)
+      this._onGoBack = this._onGoBack.bind(this)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -62,8 +63,8 @@ class Documents extends Component {
    componentWillReceiveProps(nextProps) {
     const {dispatch, env, sessionToken, documentlist, documentlists} = this.props
 
-    if (documentlist.name !== nextProps.documentlist.name) {
-      if (!(nextProps.documentlist.name in documentlists) || documentlists[nextProps.documentlist.name].items.length === 0) {
+    if (documentlist.id !== nextProps.documentlist.id) {
+      if (!(nextProps.documentlist.id in documentlists) || documentlists[nextProps.documentlist.id].items.length === 0) {
         dispatch(fetchDocumentsIfNeeded(env, sessionToken, nextProps.documentlist))
       }
     }
@@ -78,10 +79,24 @@ class Documents extends Component {
     if (document.FamilyCode == 'FOLDER')
     {
       const {dispatch, env, sessionToken, documentlist} = this.props
+       
+       
+       var newId;
+       var newName = document.Name;
+       var fId = document.Id;
+       var parentId = documentlist.id;
+       var parentName = documentlist.name;
+       var splitChars = '|';
+        if (documentlist.id.indexOf(splitChars) >= 0) {
+            var dtlStr = documentlist.id.split(splitChars);
+            var newId  =`${dtlStr[0]}${splitChars}${document.Id}`//i.e all_docuemnts|{folderID}
+        }
+        else
+        {
+            var newId  =`${documentlist.id}${splitChars}${document.Id}`
+        }
 
-      var newName =  documentlist.name + "_" + document.Id
-      parentfid = "";
-      dispatch(changeTable(newName, document.Id, parentfid ))
+        dispatch(changeTable(newId, newName, fId, parentId, parentName ))
     }
     else
     {
@@ -112,11 +127,29 @@ class Documents extends Component {
   }
 
 
-  GoBack(){
-     this.state.foldersTrail.pop();  
-     var fid = this.state.foldersTrail.length > 0 ? this.state.foldersTrail[this.state.foldersTrail.length-1].Id: null;
-     this.setState({folderId: fid });
-     this.searchDocuments('')
+  _onGoBack(){
+      const {dispatch, env, sessionToken, documentlist} = this.props
+       
+       
+        var newId  =documentlist.parentId;
+        var newName  =documentlist.parentName;
+        var fId = "";
+        var parentId = "";
+        var  parentName = "";
+        var splitChars = '|';
+        if (newId.indexOf(splitChars) >= 0) {
+            var dtlStr = newId.split(splitChars);
+            fId = dtlStr[0];
+        }
+        
+       var  xdocumentlist = {
+                        id: documentlist.parentId,
+                        name: documentlist.parentName,
+                        fId: fId,
+                        parentId: "",
+                        parentName:  ""
+                      }
+        dispatch(fetchDocumentsIfNeeded(env, sessionToken, xdocumentlist))
   }
   
   _onRefresh(type, message){
@@ -125,6 +158,28 @@ class Documents extends Component {
    dispatch(refreshDocuments(env, sessionToken, documentlist))
   }
 
+_renderBreadCrums() {
+   
+      const {dispatch, env, sessionToken, documentlist} = this.props
+      
+       var splitChars = '|';
+       var  newName;
+       var parentId;
+       var   parentName;
+        if (documentlist.parentId !== '') {
+            var parentId = documentlist.parentId;
+            var   parentName = documentlist.  parentName;
+
+             return(<View>
+                        <Button  style={styles.backButton}>...</Button>
+                        <Text style={styles.backButton} onPress={this._onGoBack.bind(this)}>{parentName} </Text>
+                      </View>)
+        }
+        else
+        {
+            return null;
+        }
+}
 
 _renderTableContent(dataSource, isFetching){
        if ( dataSource.getRowCount() === 0 ) {
@@ -169,19 +224,17 @@ _renderTableContent(dataSource, isFetching){
   render () {
     const {dispatch, documentlists, documentlist } = this.props
    
-    const isFetching =documentlist.name in documentlists ? documentlists[documentlist.name].isFetching : false
+    const isFetching =documentlist.id in documentlists ? documentlists[documentlist.id].isFetching : false
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-    let dataSource = documentlist.name in documentlists ? ds.cloneWithRows(documentlists[documentlist.name].items) : ds.cloneWithRows([])
+    let dataSource = documentlist.id in documentlists ? ds.cloneWithRows(documentlists[documentlist.id].items) : ds.cloneWithRows([])
 
-    var breadCrums = this.state.folderId != null ?    <View style={{flexDirection:"row"}}>
-    <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>     ...  </Button>
-          <Text style={styles.backButton}>  {this.state.folderName}</Text>
-     </View> : null;
+   
 
     var additionalStyle = { };
     
     return (
       <ViewContainer  ref="masterView" style={[styles.container, additionalStyle]}>
+      
         <View style={styles.separator} />
 
         { isFetching &&
@@ -189,7 +242,7 @@ _renderTableContent(dataSource, isFetching){
             <ProgressBar styleAttr='Small' />
           </View>
         }
-
+        {this._renderBreadCrums()}
         {this._renderTableContent(dataSource, isFetching)}
          <ActionButton buttonColor="rgba(231,76,60,1)">
           <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => this._onRefresh('info', 'wawa ziba and his group')}>

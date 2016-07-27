@@ -36,18 +36,18 @@ export default function documentlists(state = {}, action) {
   switch(action.type) {
   case types.RECEIVE_DOCUMENTS:
     return Object.assign({}, state, {
-      [action.name]: documentlist(state[action.name], action)
+      [action.id]: documentlist(state[action.id], action)
     })
 
   case types.REQUEST_DOCUMENTS:
   console.log("REQUEST_DOCUMENTS"+JSON.stringify(action))
     return Object.assign({}, state, {
-      [action.name]: documentlist(state[action.name], action)
+      [action.id]: documentlist(state[action.id], action)
     })
   
   case types.INITIALIZE_DOCUMENTS:
     return Object.assign({}, state, {
-      [action.name]: documentlist(state[action.name], action),
+      [action.id]: documentlist(state[action.id], action),
     })
   
   default:

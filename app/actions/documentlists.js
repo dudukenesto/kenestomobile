@@ -50,14 +50,14 @@ export function fetchDocumentsIfNeeded(env, sessionToken, documentlist) {
 
 export function refreshDocuments(env, sessionToken, documentlist) {
     return (dispatch, getState) => {
-      const url = constructRetrieveDocumentsUrl(env, sessionToken, fId)
+      const url = constructRetrieveDocumentsUrl(env, sessionToken, documentlist.fId)
       return dispatch(fetchDocuments(url, documentlist, types.INITIALIZE_DOCUMENTS))
   }
 }
 
 function getNextUrl(env, sessionToken, documentlists, documentlist) {
   
-  const activePlaylist = documentlists[documentlist.name]
+  const activePlaylist = documentlists[documentlist.id]
   if (!activePlaylist || activePlaylist.nextUrl === false) {
     return constructRetrieveDocumentsUrl(env, sessionToken, documentlist.fId)
   }
@@ -70,7 +70,7 @@ function receiveDocuments(documents, nextUrl, documentlist) {
   return {
     type: types.RECEIVE_DOCUMENTS,
     nextUrl,
-    name: documentlist.name,
+    id: documentlist.id,
     documents
   }
 }
@@ -80,7 +80,7 @@ function initializeDocuments(documents, nextUrl, documentlist) {
   return {
     type: types.INITIALIZE_DOCUMENTS,
     nextUrl,
-     name: documentlist.name,
+     id: documentlist.id,
     documents
   }
 }
@@ -89,12 +89,12 @@ function requestDocuments(documentlist) {
    console.log(JSON.stringify(documentlist))
   return {
     type: types.REQUEST_DOCUMENTS,
-    name: documentlist.name
+    id: documentlist.id
   }
 }
 
 function shouldFetchDocuments(documentlists, documentlist) {
-  const activePlaylist = documentlists[documentlist.name]
+  const activePlaylist = documentlists[documentlist.id]
   if (!activePlaylist || !activePlaylist.isFetching && (activePlaylist.nextUrl !== null) && (activePlaylist.nextUrl !== "")) {
     return true
   }

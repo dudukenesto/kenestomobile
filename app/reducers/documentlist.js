@@ -1,9 +1,11 @@
 import * as types from '../constants/ActionTypes'
 
 export default function documentlist(state = {
-  name: "all_documents",
+  name: "All Documents",
+  id:"all_documents",
   fId: "",
-  parentfId: ""
+  parentId: "",
+  parentName: ""
 }, action) {
   switch(action.type) {
   case types.CHANGE_TABLE_NAME:

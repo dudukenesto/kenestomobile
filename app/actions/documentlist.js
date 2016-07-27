@@ -5,11 +5,13 @@ let {
 Alert
 } = React
 
-export function changeTable(name , fId, parentfId) {
+export function changeTable(id, name, fId, parentId,   parentName) {
   return {
     type: types.CHANGE_TABLE_NAME,
+    id:id,
     name: name,
     fId:fId,
-    parentfId:parentfId
+    parentId:parentId,
+    parentName:  parentName
   }
 }
