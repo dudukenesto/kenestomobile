@@ -5,7 +5,7 @@ let {
 Alert
 } = React
 
-export function changeTableName(name , fId, parentfId) {
+export function changeTable(name , fId, parentfId) {
   return {
     type: types.CHANGE_TABLE_NAME,
     name: name,

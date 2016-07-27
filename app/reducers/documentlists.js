@@ -1,7 +1,7 @@
 import * as types from '../constants/ActionTypes'
 
 let React = require('react-native')
-function tableName(state = {
+function documentlist(state = {
   isFetching: false,
   items: [],
   nextUrl: false
@@ -32,22 +32,22 @@ function tableName(state = {
   }
 }
 
-export default function tableNames(state = {}, action) {
+export default function documentlists(state = {}, action) {
   switch(action.type) {
   case types.RECEIVE_DOCUMENTS:
     return Object.assign({}, state, {
-      [action.name]: tableName(state[action.name], action)
+      [action.name]: documentlist(state[action.name], action)
     })
 
   case types.REQUEST_DOCUMENTS:
   console.log("REQUEST_DOCUMENTS"+JSON.stringify(action))
     return Object.assign({}, state, {
-      [action.name]: tableName(state[action.name], action)
+      [action.name]: documentlist(state[action.name], action)
     })
   
   case types.INITIALIZE_DOCUMENTS:
     return Object.assign({}, state, {
-      [action.name]: tableName(state[action.name], action),
+      [action.name]: documentlist(state[action.name], action),
     })
   
   default:

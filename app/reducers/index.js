@@ -1,10 +1,10 @@
 import {combineReducers} from 'redux'
-import tableNames from '../reducers/tableNames'
-import tableName from '../reducers/tableName'
+import documentlists from '../reducers/documentlists'
+import documentlist from '../reducers/documentlist'
 
 const rootReducer = combineReducers({
-  tableNames,
-  tableName
+  documentlists,
+  documentlist
 })
 
 export default rootReducer

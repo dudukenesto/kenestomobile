@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes'
 
-export default function tableName(state = {
+export default function documentlist(state = {
   name: "all_documents",
   fId: "",
   parentfId: ""

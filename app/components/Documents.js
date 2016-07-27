@@ -26,8 +26,8 @@ var dismissKeyboard = require('dismissKeyboard');
 var DocumentCell = require('../components/documentCell'); 
 
 import {Actions} from "react-native-router-flux";
-import {fetchDocumentsIfNeeded,refreshDocuments} from '../actions/tableNames'
-import {changeTableName} from '../actions/tableName'
+import {fetchDocumentsIfNeeded,refreshDocuments} from '../actions/documentlists'
+import {changeTable} from '../actions/documentlist'
 import ViewContainer from '../components/ViewContainer';
 import KenestoHelper from '../utils/KenestoHelper';
 import Button from "react-native-button";
@@ -55,16 +55,16 @@ class Documents extends Component {
   }
 
   componentWillMount() {
-    const {dispatch, env, sessionToken, tableName} = this.props
-    dispatch(fetchDocumentsIfNeeded(env, sessionToken, tableName))
+    const {dispatch, env, sessionToken, documentlist} = this.props
+    dispatch(fetchDocumentsIfNeeded(env, sessionToken, documentlist))
   }
 
    componentWillReceiveProps(nextProps) {
-    const {dispatch, env, sessionToken, tableName, tableNames} = this.props
+    const {dispatch, env, sessionToken, documentlist, documentlists} = this.props
 
-    if (tableName.name !== nextProps.tableName.name) {
-      if (!(nextProps.tableName.name in tableNames) || tableNames[nextProps.tableName.name].items.length === 0) {
-        dispatch(fetchDocumentsIfNeeded(env, sessionToken, nextProps.tableName))
+    if (documentlist.name !== nextProps.documentlist.name) {
+      if (!(nextProps.documentlist.name in documentlists) || documentlists[nextProps.documentlist.name].items.length === 0) {
+        dispatch(fetchDocumentsIfNeeded(env, sessionToken, nextProps.documentlist))
       }
     }
   }
@@ -77,11 +77,11 @@ class Documents extends Component {
   selectItem(document) {
     if (document.FamilyCode == 'FOLDER')
     {
-      const {dispatch, env, sessionToken, tableName} = this.props
+      const {dispatch, env, sessionToken, documentlist} = this.props
 
-      var newName =  tableName.name + "_" + document.Id
+      var newName =  documentlist.name + "_" + document.Id
       parentfid = "";
-      dispatch(changeTableName(newName, document.Id, parentfid ))
+      dispatch(changeTable(newName, document.Id, parentfid ))
     }
     else
     {
@@ -120,9 +120,9 @@ class Documents extends Component {
   }
   
   _onRefresh(type, message){
-    const {dispatch, env, sessionToken, fId, tableName} = this.props
+    const {dispatch, env, sessionToken,documentlist} = this.props
    console.log("_onRefresh"+dispatch)
-   dispatch(refreshDocuments(env, sessionToken, fId, tableName))
+   dispatch(refreshDocuments(env, sessionToken, documentlist))
   }
 
 
@@ -167,11 +167,11 @@ _renderTableContent(dataSource, isFetching){
 
 
   render () {
-    const {dispatch, tableNames,tableName } = this.props
+    const {dispatch, documentlists, documentlist } = this.props
    
-    const isFetching =tableName.name in tableNames ? tableNames[tableName.name].isFetching : false
+    const isFetching =documentlist.name in documentlists ? documentlists[documentlist.name].isFetching : false
     let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-    let dataSource = tableName.name in tableNames ? ds.cloneWithRows(tableNames[tableName.name].items) : ds.cloneWithRows([])
+    let dataSource = documentlist.name in documentlists ? ds.cloneWithRows(documentlists[documentlist.name].items) : ds.cloneWithRows([])
 
     var breadCrums = this.state.folderId != null ?    <View style={{flexDirection:"row"}}>
     <Button onPress={ (()=> this.GoBack())} style={styles.backButton}>     ...  </Button>

@@ -16,11 +16,11 @@ class MainContainer extends Component {
 }
 
 function mapStateToProps(state) {
-  const { tableName, tableNames } = state
+  const { documentlist, documentlists } = state
   
   return {
-    tableName,
-    tableNames,
+    documentlist,
+    documentlists,
   }
 }
 

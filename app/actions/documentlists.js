@@ -5,9 +5,9 @@ let {
 Alert
 } = React
 
-function fetchDocuments(url, tableName ,actionType) {
+function fetchDocuments(url, documentlist ,actionType) {
   return (dispatch, getState) => {
-    dispatch(requestDocuments(tableName))
+    dispatch(requestDocuments(documentlist))
     return fetch(url)
       .then(response => response.json())
       .then(json => {
@@ -16,10 +16,10 @@ function fetchDocuments(url, tableName ,actionType) {
         switch(actionType) {
           
               case types.RECEIVE_DOCUMENTS:
-                dispatch(receiveDocuments(json.ResponseData.DocumentsList, nextUrl, tableName))
+                dispatch(receiveDocuments(json.ResponseData.DocumentsList, nextUrl, documentlist))
                 break
               case types.INITIALIZE_DOCUMENTS:
-                  dispatch(initializeDocuments(json.ResponseData.DocumentsList, nextUrl, tableName))
+                  dispatch(initializeDocuments(json.ResponseData.DocumentsList, nextUrl, documentlist))
                   break
             }   
       })
@@ -37,64 +37,64 @@ function fetchDocuments(url, tableName ,actionType) {
   }
 }
 
-export function fetchDocumentsIfNeeded(env, sessionToken, tableName) {
+export function fetchDocumentsIfNeeded(env, sessionToken, documentlist) {
   return (dispatch, getState) => {
-    const {tableNames} = getState()
-    if (shouldFetchDocuments(tableNames, tableName)) {
-      const nextUrl = getNextUrl(env, sessionToken ,tableNames, tableName)
-      return dispatch(fetchDocuments(nextUrl, tableName, types.RECEIVE_DOCUMENTS))
+    const {documentlists} = getState()
+    if (shouldFetchDocuments(documentlists, documentlist)) {
+      const nextUrl = getNextUrl(env, sessionToken ,documentlists, documentlist)
+      return dispatch(fetchDocuments(nextUrl, documentlist, types.RECEIVE_DOCUMENTS))
     }
   }
 }
 
 
-export function refreshDocuments(env, sessionToken, tableName) {
+export function refreshDocuments(env, sessionToken, documentlist) {
     return (dispatch, getState) => {
       const url = constructRetrieveDocumentsUrl(env, sessionToken, fId)
-      return dispatch(fetchDocuments(url, tableName, types.INITIALIZE_DOCUMENTS))
+      return dispatch(fetchDocuments(url, documentlist, types.INITIALIZE_DOCUMENTS))
   }
 }
 
-function getNextUrl(env, sessionToken, tableNames, tableName) {
+function getNextUrl(env, sessionToken, documentlists, documentlist) {
   
-  const activePlaylist = tableNames[tableName.name]
+  const activePlaylist = documentlists[documentlist.name]
   if (!activePlaylist || activePlaylist.nextUrl === false) {
-    return constructRetrieveDocumentsUrl(env, sessionToken, tableName.fId)
+    return constructRetrieveDocumentsUrl(env, sessionToken, documentlist.fId)
   }
   console.log(activePlaylist.nextUrl)
   return activePlaylist.nextUrl
 }
 
-function receiveDocuments(documents, nextUrl, tableName) {
+function receiveDocuments(documents, nextUrl, documentlist) {
         
   return {
     type: types.RECEIVE_DOCUMENTS,
     nextUrl,
-    name: tableName.name,
+    name: documentlist.name,
     documents
   }
 }
 
-function initializeDocuments(documents, nextUrl, tableName) {
+function initializeDocuments(documents, nextUrl, documentlist) {
        
   return {
     type: types.INITIALIZE_DOCUMENTS,
     nextUrl,
-     name: tableName.name,
+     name: documentlist.name,
     documents
   }
 }
 
-function requestDocuments(tableName) {
-   console.log(JSON.stringify(tableName))
+function requestDocuments(documentlist) {
+   console.log(JSON.stringify(documentlist))
   return {
     type: types.REQUEST_DOCUMENTS,
-    name: tableName.name
+    name: documentlist.name
   }
 }
 
-function shouldFetchDocuments(tableNames, tableName) {
-  const activePlaylist = tableNames[tableName.name]
+function shouldFetchDocuments(documentlists, documentlist) {
+  const activePlaylist = documentlists[documentlist.name]
   if (!activePlaylist || !activePlaylist.isFetching && (activePlaylist.nextUrl !== null) && (activePlaylist.nextUrl !== "")) {
     return true
   }

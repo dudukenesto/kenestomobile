@@ -4,7 +4,7 @@ let {
   View,
 } = React
 import {connect} from 'react-redux/native'
-import {fetchDocumentsIfNeeded} from '../actions/tableNames'
+import {fetchDocumentsIfNeeded} from '../actions/documentlists'
 import Documents from './Documents'
 
 class Main extends React.Component {
@@ -14,12 +14,12 @@ class Main extends React.Component {
   }
 
   renderContent () {
-    const { env, sessionToken, fId, tableName } = this.props
+    const { env, sessionToken, fId, documentlist } = this.props
   
     return (
       <Documents
         {...this.props}
-        scrollFunc={fetchDocumentsIfNeeded.bind(null, env, sessionToken, tableName)} />
+        scrollFunc={fetchDocumentsIfNeeded.bind(null, env, sessionToken, documentlist)} />
     )
   }
 
