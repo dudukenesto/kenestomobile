@@ -2,16 +2,16 @@ import * as types from '../constants/ActionTypes'
 import {constructRetrieveDocumentsUrl} from '../utils/DocumentsUtils'
 let React = require('react-native')
 let {
-Alert
+  Alert
 } = React
 
-export function changeTable(id, name, fId, parentId,   parentName) {
+export function updateDocumentList(id, name, fId, parentId, parentName) {
   return {
-    type: types.CHANGE_TABLE_NAME,
-    id:id,
+    type: types.UPDATE_DOCUMENTS_LIST,
+    id: id,
     name: name,
-    fId:fId,
-    parentId:parentId,
-    parentName:  parentName
+    fId: fId,
+    parentId: parentId,
+    parentName: parentName
   }
 }

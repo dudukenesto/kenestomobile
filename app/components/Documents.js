@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import {View, 
-        Text, 
-        TextInput,
-        StyleSheet,
-        TouchableHighlight,
-        Dimensions,
-        Image,
-        ListView,
-        TouchableOpacity,
-        ActivityIndicatorIOS,
-        Platform,
-        ProgressBarAndroid,
-        RefreshControl
-       } from 'react-native'
+import {View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableHighlight,
+  Dimensions,
+  Image,
+  ListView,
+  TouchableOpacity,
+  ActivityIndicatorIOS,
+  Platform,
+  ProgressBarAndroid,
+  RefreshControl
+} from 'react-native'
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import shallowEqual from 'react-pure-render/shallowEqual'
@@ -23,11 +23,11 @@ let deviceWidth = Dimensions.get('window').width
 let deviceHeight = Dimensions.get('window').height
 
 var dismissKeyboard = require('dismissKeyboard');
-var DocumentCell = require('../components/documentCell'); 
+var DocumentCell = require('../components/documentCell');
 
 import {Actions} from "react-native-router-flux";
-import {fetchDocumentsIfNeeded,refreshDocuments} from '../actions/documentlists'
-import {changeTable} from '../actions/documentlist'
+import {fetchTableIfNeeded, refreshTable, changeTable} from '../actions/documentlists'
+import {updateDocumentList} from '../actions/documentlist'
 import ViewContainer from '../components/ViewContainer';
 import KenestoHelper from '../utils/KenestoHelper';
 import Button from "react-native-button";
@@ -36,7 +36,7 @@ import ActionButton from 'react-native-action-button';
 
 
 class Documents extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isFetchingTail: false
@@ -44,8 +44,8 @@ class Documents extends Component {
 
     this.onEndReached = this.onEndReached.bind(this)
     this.selectItem = this.selectItem.bind(this)
-     this._onRefresh = this._onRefresh.bind(this)
-      this._onGoBack = this._onGoBack.bind(this)
+    this._onRefresh = this._onRefresh.bind(this)
+    this._onGoBack = this._onGoBack.bind(this)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -57,16 +57,13 @@ class Documents extends Component {
 
   componentWillMount() {
     const {dispatch, env, sessionToken, documentlist} = this.props
-    dispatch(fetchDocumentsIfNeeded(env, sessionToken, documentlist))
+    dispatch(fetchTableIfNeeded(env, sessionToken, documentlist))
   }
 
-   componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
     const {dispatch, env, sessionToken, documentlist, documentlists} = this.props
-
     if (documentlist.id !== nextProps.documentlist.id) {
-      if (!(nextProps.documentlist.id in documentlists) || documentlists[nextProps.documentlist.id].items.length === 0) {
-        dispatch(fetchDocumentsIfNeeded(env, sessionToken, nextProps.documentlist))
-      }
+      dispatch(changeTable(env, sessionToken, nextProps.documentlist));
     }
   }
 
@@ -76,33 +73,29 @@ class Documents extends Component {
 
 
   selectItem(document) {
-    if (document.FamilyCode == 'FOLDER')
-    {
+    if (document.FamilyCode == 'FOLDER') {
       const {dispatch, env, sessionToken, documentlist} = this.props
-       
-       
-       var newId;
-       var newName = document.Name;
-       var fId = document.Id;
-       var parentId = documentlist.id;
-       var parentName = documentlist.name;
-       var splitChars = '|';
-        if (documentlist.id.indexOf(splitChars) >= 0) {
-            var dtlStr = documentlist.id.split(splitChars);
-            var newId  =`${dtlStr[0]}${splitChars}${document.Id}`//i.e all_docuemnts|{folderID}
-        }
-        else
-        {
-            var newId  =`${documentlist.id}${splitChars}${document.Id}`
-        }
 
-        dispatch(changeTable(newId, newName, fId, parentId, parentName ))
+      var newId;
+      var newName = document.Name;
+      var fId = document.Id;
+      var parentId = documentlist.id;
+      var parentName = documentlist.name;
+      var splitChars = '|';
+      if (documentlist.id.indexOf(splitChars) >= 0) {
+        var dtlStr = documentlist.id.split(splitChars);
+        var newId = `${dtlStr[0]}${splitChars}${document.Id}`//i.e all_docuemnts|{folderID}
+      }
+      else {
+        var newId = `${documentlist.id}${splitChars}${document.Id}`
+      }
+
+      dispatch(updateDocumentList(newId, newName, fId, parentId, parentName))
     }
-    else
-    {
-      Actions.documentView({sessionToken: this.props.sessionToken, viewerUrl: document.ViewerUrl});
+    else {
+      Actions.documentView({ sessionToken: this.props.sessionToken, viewerUrl: document.ViewerUrl });
     }
-      
+
   }
 
   onSearchChange(event) {
@@ -119,7 +112,7 @@ class Documents extends Component {
   ) {
     var style = styles.rowSeparator;
     if (adjacentRowHighlighted) {
-        style = [style, styles.rowSeparatorHide];
+      style = [style, styles.rowSeparatorHide];
     }
     return (
       <View key={'SEP_' + sectionID + '_' + rowID}  style={style}/>
@@ -127,114 +120,100 @@ class Documents extends Component {
   }
 
 
-  _onGoBack(){
-      const {dispatch, env, sessionToken, documentlist} = this.props
-       
-       
-        var newId  =documentlist.parentId;
-        var newName  =documentlist.parentName;
-        var fId = "";
-        var parentId = "";
-        var  parentName = "";
-        var splitChars = '|';
-        if (newId.indexOf(splitChars) >= 0) {
-            var dtlStr = newId.split(splitChars);
-            fId = dtlStr[0];
-        }
-        
-       var  xdocumentlist = {
-                        id: documentlist.parentId,
-                        name: documentlist.parentName,
-                        fId: fId,
-                        parentId: "",
-                        parentName:  ""
-                      }
-        dispatch(fetchDocumentsIfNeeded(env, sessionToken, xdocumentlist))
-  }
-  
-  _onRefresh(type, message){
-    const {dispatch, env, sessionToken,documentlist} = this.props
-   console.log("_onRefresh"+dispatch)
-   dispatch(refreshDocuments(env, sessionToken, documentlist))
-  }
+  _onGoBack() {
+    const {dispatch, env, sessionToken, documentlist, documentlists} = this.props
 
-_renderBreadCrums() {
-   
-      const {dispatch, env, sessionToken, documentlist} = this.props
-      
-       var splitChars = '|';
-       var  newName;
-       var parentId;
-       var   parentName;
-        if (documentlist.parentId !== '') {
-            var parentId = documentlist.parentId;
-            var   parentName = documentlist.  parentName;
+    var fId = "";
+    var id = documentlists[documentlist.id].parentId;
+    var name = documentlists[documentlist.id].parentName;
+    var parentId = documentlists[id].parentId;
+    var parentName = documentlists[id].parentName;
+    var splitChars = '|';
 
-             return(<View>
-                        <Button  style={styles.backButton}>...</Button>
-                        <Text style={styles.backButton} onPress={this._onGoBack.bind(this)}>{parentName} </Text>
-                      </View>)
-        }
-        else
-        {
-            return null;
-        }
-}
-
-_renderTableContent(dataSource, isFetching){
-       if ( dataSource.getRowCount() === 0 ) {
-            return( <NoDocuments
-                      filter={this.state.filter}
-                      isLoading={isFetching}
-                      onRefresh={this._onRefresh.bind(this)}
-                    /> )
-        }
-        else
-        {
-          return(
-                <ListView
-                    ref="listview"
-                    refreshControl={
-                    <RefreshControl
-                      refreshing={isFetching}
-                      onRefresh={this._onRefresh.bind(this)}
-                    />
-                  }
-                  renderSeparator={this.renderSeparator}
-                  dataSource={dataSource}
-                  renderRow={(document,sectionID,rowID, highlightRowFunc) => {
-                              return (<DocumentCell
-                                        key={document.Id}
-                                        onSelect={this.selectItem.bind(this, document)}
-                                        //onHighlight={this.highlightRowFunc(sectionID, rowID)}
-                                        //onUnhighlight={this.highlightRowFunc(null, null)}
-                                        document={document}/>
-                                                      )}}
-                  onEndReached={this.onEndReached}
-                  automaticallyAdjustContentInsets={false}
-                  keyboardDismissMode="on-drag"
-                  keyboardShouldPersistTaps={true}
-                  showsVerticalScrollIndicator={false}
-                />
-           )
-          }
+    if (id.indexOf(splitChars) >= 0) {
+      var dtlStr = id.split(splitChars);
+      fId = dtlStr[1];
     }
 
+    dispatch(updateDocumentList(id, name, fId, parentId, parentName))
+  }
 
-  render () {
+  _onRefresh(type, message) {
+    const {dispatch, env, sessionToken, documentlist} = this.props
+    console.log("_onRefresh" + dispatch)
+    dispatch(refreshTable(env, sessionToken, documentlist))
+  }
+
+  _renderBreadCrums() {
+    const {dispatch, env, sessionToken, documentlist, documentlists} = this.props
+    var splitChars = '|';
+    const isFetching = documentlist.id in documentlists ? documentlists[documentlist.id].isFetching : false;
+    const showBreadCrums = documentlist.id in documentlists && documentlists[documentlist.id].parentName != undefined ? true : false;
+    if (!isFetching && showBreadCrums) {
+      var parentName = documentlists[documentlist.id].parentName;
+      return (
+        <View>
+          <TouchableOpacity style={styles.backButton} onPress={this._onGoBack.bind(this) }>
+            <Text style={styles.backLabel}>Go to {parentName} Page</Text>
+          </TouchableOpacity>
+        </View>)
+    }
+    else {
+      return null;
+    }
+  }
+
+  _renderTableContent(dataSource, isFetching) {
+    if (dataSource.getRowCount() === 0) {
+      return (<NoDocuments
+        filter={this.state.filter}
+        isLoading={isFetching}
+        onRefresh={this._onRefresh.bind(this) }
+        />)
+    }
+    else {
+      return (
+        <ListView
+          ref="listview"
+          refreshControl={
+            <RefreshControl
+              refreshing={isFetching}
+              onRefresh={this._onRefresh.bind(this) }
+              />
+          }
+          renderSeparator={this.renderSeparator}
+          dataSource={dataSource}
+          renderRow={(document, sectionID, rowID, highlightRowFunc) => {
+            return (<DocumentCell
+              key={document.Id}
+              onSelect={this.selectItem.bind(this, document) }
+              //onHighlight={this.highlightRowFunc(sectionID, rowID)}
+              //onUnhighlight={this.highlightRowFunc(null, null)}
+              document={document}/>
+            )
+          } }
+          onEndReached={this.onEndReached}
+          automaticallyAdjustContentInsets={false}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps={true}
+          showsVerticalScrollIndicator={false}
+          />
+      )
+    }
+  }
+
+
+  render() {
     const {dispatch, documentlists, documentlist } = this.props
-   
-    const isFetching =documentlist.id in documentlists ? documentlists[documentlist.id].isFetching : false
-    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+
+    const isFetching = documentlist.id in documentlists ? documentlists[documentlist.id].isFetching : false
+    let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
     let dataSource = documentlist.id in documentlists ? ds.cloneWithRows(documentlists[documentlist.id].items) : ds.cloneWithRows([])
+    var additionalStyle = {};
 
-   
-
-    var additionalStyle = { };
-    
     return (
       <ViewContainer  ref="masterView" style={[styles.container, additionalStyle]}>
-      
+        {this._renderBreadCrums() }
         <View style={styles.separator} />
 
         { isFetching &&
@@ -242,21 +221,20 @@ _renderTableContent(dataSource, isFetching){
             <ProgressBar styleAttr='Small' />
           </View>
         }
-        {this._renderBreadCrums()}
-        {this._renderTableContent(dataSource, isFetching)}
-         <ActionButton buttonColor="rgba(231,76,60,1)">
-          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => this._onRefresh('info', 'wawa ziba and his group')}>
+
+        {this._renderTableContent(dataSource, isFetching) }
+        <ActionButton buttonColor="rgba(231,76,60,1)">
+          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => this._onRefresh('info', 'wawa ziba and his group') }>
             <Icon name="folder" style={styles.actionButtonIcon} />
           </ActionButton.Item>
-          <ActionButton.Item buttonColor='#3498db' title="Upload" onPress={() => Actions.animated()}>
+          <ActionButton.Item buttonColor='#3498db' title="Upload" onPress={() => Actions.animated() }>
             <Icon name="folder" style={styles.actionButtonIcon} />
           </ActionButton.Item>
-          
-          <ActionButton.Item buttonColor='#1abc9c' title="New Folder" onPress={() => Actions.createFolder({env: this.state.env, currentFolderId: this.state.folderId, sessionToken: this.props.sessionToken, afterCreateCallback: this._onRefresh, updateLoading: this.updateLoadingState })}>
+
+          <ActionButton.Item buttonColor='#1abc9c' title="New Folder" onPress={() => Actions.createFolder({ env: this.state.env, currentFolderId: this.state.folderId, sessionToken: this.props.sessionToken, afterCreateCallback: this._onRefresh, updateLoading: this.updateLoadingState }) }>
             <Icon name="folder" style={styles.actionButtonIcon} />
           </ActionButton.Item>
         </ActionButton>
-        
       </ViewContainer>
     )
   }
@@ -265,7 +243,7 @@ _renderTableContent(dataSource, isFetching){
 
 
 var NoDocuments = React.createClass({
-  render: function() {
+  render: function () {
     var text = '';
     if (this.props.filter) {
       text = `No results for "${this.props.filter}"`;
@@ -278,7 +256,7 @@ var NoDocuments = React.createClass({
     return (
       <View style={[styles.container, styles.centerText]}>
         <Text style={styles.noDocumentsText}>{text}</Text>
-         <Button onPress={this.props.onRefresh}>refresh</Button>
+        <Button onPress={this.props.onRefresh}>refresh</Button>
       </View>
     );
   }
@@ -313,11 +291,16 @@ var styles = StyleSheet.create({
     opacity: 0.0,
   },
   backButton: {
-    color: "#0a3a60",
-    fontWeight:"normal",
-    fontSize:20
+    marginTop:15,
+    padding: 15,
+    backgroundColor: '#3C5773',
+    alignSelf: 'stretch'
   },
-   actionButtonIcon: {
+  backLabel: {
+    color: '#F4F4E9',
+    textAlign: 'center'
+  },
+  actionButtonIcon: {
     fontSize: 20,
     height: 22,
     color: 'white',
