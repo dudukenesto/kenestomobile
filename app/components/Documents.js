@@ -24,8 +24,10 @@ let deviceHeight = Dimensions.get('window').height
 
 var dismissKeyboard = require('dismissKeyboard');
 var DocumentCell = require('../components/documentCell');
+const splitChars = '|';
 
 import {Actions} from "react-native-router-flux";
+import _ from "lodash";
 import {fetchTableIfNeeded, refreshTable, changeTable} from '../actions/documentlists'
 import {updateDocumentList} from '../actions/documentlist'
 import ViewContainer from '../components/ViewContainer';
@@ -81,7 +83,7 @@ class Documents extends Component {
       var fId = document.Id;
       var parentId = documentlist.id;
       var parentName = documentlist.name;
-      var splitChars = '|';
+    
       if (documentlist.id.indexOf(splitChars) >= 0) {
         var dtlStr = documentlist.id.split(splitChars);
         var newId = `${dtlStr[0]}${splitChars}${document.Id}`//i.e all_docuemnts|{folderID}
@@ -128,8 +130,7 @@ class Documents extends Component {
     var name = documentlists[documentlist.id].parentName;
     var parentId = documentlists[id].parentId;
     var parentName = documentlists[id].parentName;
-    var splitChars = '|';
-
+ 
     if (id.indexOf(splitChars) >= 0) {
       var dtlStr = id.split(splitChars);
       fId = dtlStr[1];
@@ -146,7 +147,7 @@ class Documents extends Component {
 
   _renderBreadCrums() {
     const {dispatch, env, sessionToken, documentlist, documentlists} = this.props
-    var splitChars = '|';
+  
     const isFetching = documentlist.id in documentlists ? documentlists[documentlist.id].isFetching : false;
     const showBreadCrums = documentlist.id in documentlists && documentlists[documentlist.id].parentName != undefined ? true : false;
     if (!isFetching && showBreadCrums) {
@@ -163,6 +164,15 @@ class Documents extends Component {
     }
   }
 
+  _renderSectionHeader(sectionData, sectionID) {
+    return (
+       <View style={styles.backButton}>
+        
+            <Text style={styles.backLabel}>{sectionID}</Text>
+          
+        </View>
+      )
+  }
   _renderTableContent(dataSource, isFetching) {
     if (dataSource.getRowCount() === 0) {
       return (<NoDocuments
@@ -183,6 +193,7 @@ class Documents extends Component {
           }
           renderSeparator={this.renderSeparator}
           dataSource={dataSource}
+          renderSectionHeader={this._renderSectionHeader.bind(this)}
           renderRow={(document, sectionID, rowID, highlightRowFunc) => {
             return (<DocumentCell
               key={document.Id}
@@ -203,12 +214,74 @@ class Documents extends Component {
   }
 
 
+
   render() {
     const {dispatch, documentlists, documentlist } = this.props
 
     const isFetching = documentlist.id in documentlists ? documentlists[documentlist.id].isFetching : false
-    let ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-    let dataSource = documentlist.id in documentlists ? ds.cloneWithRows(documentlists[documentlist.id].items) : ds.cloneWithRows([])
+   
+    var items = documentlist.id in documentlists ? documentlists[documentlist.id].items: [],
+            length = items.length,
+            dataBlob = {},
+            sectionIDs = [],
+            rowIDs = [],
+            foldersSection,
+            docuemntsSection,
+            folders,
+            documents,
+            i,
+            j;
+
+
+ dataBlob["ID1"] = "Folders";
+ dataBlob["ID2"] = "Documents";
+ 
+ sectionIDs[0] = "ID1";
+ sectionIDs[1] = "ID2";
+
+folders  = _.filter(items, function(o) { return o.FamilyCode == 'FOLDER'; });
+documents = _.filter(items, function(o) { return o.FamilyCode != 'FOLDER'; });
+
+// console.log("Folders:"+JSON.stringify(folders))
+
+// console.log("documents:"+JSON.stringify(documents))
+
+rowIDs[0] = [];
+for(j = 0; j < folders.length; j++) {
+                folder = folders[j];
+                // Add Unique Row ID to RowID Array for Section
+                rowIDs[0].push(folder.Id);
+
+                // Set Value for unique Section+Row Identifier that will be retrieved by getRowData
+                dataBlob['ID1:' + folder.Id] = folder;
+            }
+
+rowIDs[1] = [];
+for(j = 0; j < documents.length; j++) {
+                document = documents[j];
+                // Add Unique Row ID to RowID Array for Section
+                rowIDs[1].push(document.Id);
+
+                // Set Value for unique Section+Row Identifier that will be retrieved by getRowData
+                dataBlob['ID2:' + document.Id] = document;
+            }
+
+    var getSectionData = (dataBlob, sectionID) => {
+        return dataBlob[sectionID];
+    }
+
+    var getRowData = (dataBlob, sectionID, rowID) => {
+        return dataBlob[sectionID + ':' + rowID];
+    }
+    let ds = new ListView.DataSource({
+            getSectionData          : getSectionData,
+            getRowData              : getRowData,
+            rowHasChanged           : (row1, row2) => row1 !== row2,
+            sectionHeaderHasChanged : (s1, s2) => s1 !== s2
+        })
+    
+
+    let dataSource = documentlist.id in documentlists ? ds.cloneWithRowsAndSections(dataBlob, sectionIDs,rowIDs): ds.cloneWithRows([])
     var additionalStyle = {};
 
     return (
